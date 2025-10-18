@@ -4,7 +4,7 @@
 
 LangGraph와 ML 모델을 활용한 AI 기반 기계환기 발관(Extubation) 실패 예측 및 환자 보호자용 설명 레포트 생성 시스템
 
-![Workflow Diagram](./assets/Logo.png)
+<img src="./assets/Logo.png" alt="Workflow Diagram" style="width:50%; height:auto;"/>
 
 ## 프로젝트 개요
 이 시스템은 중환자실(ICU) 환자의 기계환기 발관 실패 가능성을 예측하고, 의료진과 보호자가 이해하기 쉬운 설명 레포트를 자동으로 생성합니다.
