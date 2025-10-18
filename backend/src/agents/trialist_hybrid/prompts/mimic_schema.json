@@ -1,0 +1,413 @@
+{
+  "version": "3.1",
+  "description": "MIMIC-IV v3.1 schema reference for clinical trial criteria mapping",
+  "tables": {
+    "hosp.patients": {
+      "columns": [
+        "subject_id",
+        "gender",
+        "anchor_age",
+        "anchor_year",
+        "anchor_year_group",
+        "dod"
+      ],
+      "primary_key": "subject_id",
+      "description": "Patient demographics and basic information",
+      "common_joins": ["hosp.admissions ON subject_id"]
+    },
+    "hosp.admissions": {
+      "columns": [
+        "hadm_id",
+        "subject_id",
+        "admittime",
+        "dischtime",
+        "deathtime",
+        "admission_type",
+        "admission_location",
+        "discharge_location",
+        "insurance",
+        "language",
+        "marital_status",
+        "race",
+        "edregtime",
+        "edouttime",
+        "hospital_expire_flag"
+      ],
+      "primary_key": "hadm_id",
+      "foreign_keys": {
+        "subject_id": "hosp.patients.subject_id"
+      },
+      "description": "Hospital admission records with timing and demographic details",
+      "common_joins": ["hosp.patients ON subject_id"]
+    },
+    "hosp.diagnoses_icd": {
+      "columns": [
+        "hadm_id",
+        "subject_id",
+        "seq_num",
+        "icd_code",
+        "icd_version"
+      ],
+      "primary_key": ["hadm_id", "seq_num"],
+      "foreign_keys": {
+        "hadm_id": "hosp.admissions.hadm_id",
+        "subject_id": "hosp.patients.subject_id"
+      },
+      "description": "ICD-9 and ICD-10 diagnosis codes for hospitalizations",
+      "common_joins": ["hosp.admissions ON hadm_id"]
+    },
+    "hosp.procedures_icd": {
+      "columns": [
+        "hadm_id",
+        "subject_id",
+        "seq_num",
+        "chartdate",
+        "icd_code",
+        "icd_version"
+      ],
+      "primary_key": ["hadm_id", "seq_num"],
+      "foreign_keys": {
+        "hadm_id": "hosp.admissions.hadm_id",
+        "subject_id": "hosp.patients.subject_id"
+      },
+      "description": "ICD-9 and ICD-10 procedure codes for hospitalizations"
+    },
+    "hosp.labevents": {
+      "columns": [
+        "labevent_id",
+        "subject_id",
+        "hadm_id",
+        "specimen_id",
+        "itemid",
+        "charttime",
+        "storetime",
+        "value",
+        "valuenum",
+        "valueuom",
+        "ref_range_lower",
+        "ref_range_upper",
+        "flag",
+        "priority",
+        "comments"
+      ],
+      "primary_key": "labevent_id",
+      "foreign_keys": {
+        "hadm_id": "hosp.admissions.hadm_id",
+        "subject_id": "hosp.patients.subject_id",
+        "itemid": "hosp.d_labitems.itemid"
+      },
+      "description": "Laboratory measurements from hospital admissions",
+      "common_joins": [
+        "hosp.d_labitems ON itemid",
+        "hosp.admissions ON hadm_id"
+      ]
+    },
+    "hosp.d_labitems": {
+      "columns": [
+        "itemid",
+        "label",
+        "fluid",
+        "category",
+        "loinc_code"
+      ],
+      "primary_key": "itemid",
+      "description": "Dictionary of laboratory test items"
+    },
+    "hosp.prescriptions": {
+      "columns": [
+        "subject_id",
+        "hadm_id",
+        "pharmacy_id",
+        "starttime",
+        "stoptime",
+        "drug_type",
+        "drug",
+        "gsn",
+        "ndc",
+        "prod_strength",
+        "form_rx",
+        "dose_val_rx",
+        "dose_unit_rx",
+        "form_val_disp",
+        "form_unit_disp",
+        "route"
+      ],
+      "primary_key": "pharmacy_id",
+      "foreign_keys": {
+        "hadm_id": "hosp.admissions.hadm_id",
+        "subject_id": "hosp.patients.subject_id"
+      },
+      "description": "Medication prescriptions during hospitalization"
+    },
+    "icu.chartevents": {
+      "columns": [
+        "subject_id",
+        "hadm_id",
+        "stay_id",
+        "charttime",
+        "storetime",
+        "itemid",
+        "value",
+        "valuenum",
+        "valueuom",
+        "warning"
+      ],
+      "primary_key": ["subject_id", "charttime", "itemid"],
+      "foreign_keys": {
+        "stay_id": "icu.icustays.stay_id",
+        "itemid": "icu.d_items.itemid"
+      },
+      "description": "ICU vital signs and physiological measurements",
+      "common_joins": [
+        "icu.d_items ON itemid",
+        "icu.icustays ON stay_id"
+      ]
+    },
+    "icu.icustays": {
+      "columns": [
+        "subject_id",
+        "hadm_id",
+        "stay_id",
+        "first_careunit",
+        "last_careunit",
+        "intime",
+        "outtime",
+        "los"
+      ],
+      "primary_key": "stay_id",
+      "foreign_keys": {
+        "subject_id": "hosp.patients.subject_id",
+        "hadm_id": "hosp.admissions.hadm_id"
+      },
+      "description": "ICU stay records with timing and care unit information"
+    },
+    "icu.d_items": {
+      "columns": [
+        "itemid",
+        "label",
+        "abbreviation",
+        "linksto",
+        "category",
+        "unitname",
+        "param_type",
+        "lownormalvalue",
+        "highnormalvalue"
+      ],
+      "primary_key": "itemid",
+      "description": "Dictionary of ICU measurement items"
+    },
+    "icu.inputevents": {
+      "columns": [
+        "subject_id",
+        "hadm_id",
+        "stay_id",
+        "starttime",
+        "endtime",
+        "storetime",
+        "itemid",
+        "amount",
+        "amountuom",
+        "rate",
+        "rateuom",
+        "orderid",
+        "linkorderid",
+        "ordercategoryname",
+        "secondaryordercategoryname",
+        "ordercomponenttypedescription",
+        "ordercategorydescription",
+        "patientweight",
+        "totalamount",
+        "totalamountuom",
+        "isopenbag",
+        "continueinnextdept",
+        "cancelreason",
+        "statusdescription",
+        "originalamount",
+        "originalrate"
+      ],
+      "primary_key": ["subject_id", "starttime", "itemid"],
+      "foreign_keys": {
+        "stay_id": "icu.icustays.stay_id",
+        "itemid": "icu.d_items.itemid"
+      },
+      "description": "ICU fluid and medication inputs"
+    },
+    "icu.outputevents": {
+      "columns": [
+        "subject_id",
+        "hadm_id",
+        "stay_id",
+        "charttime",
+        "storetime",
+        "itemid",
+        "value",
+        "valueuom"
+      ],
+      "primary_key": ["subject_id", "charttime", "itemid"],
+      "foreign_keys": {
+        "stay_id": "icu.icustays.stay_id",
+        "itemid": "icu.d_items.itemid"
+      },
+      "description": "ICU fluid outputs (urine, drains, etc.)"
+    }
+  },
+  "common_itemids": {
+    "vital_signs": {
+      "heart_rate": {
+        "itemids": [220045],
+        "unit": "bpm",
+        "description": "Heart rate"
+      },
+      "systolic_bp": {
+        "itemids": [220050, 220179],
+        "unit": "mmHg",
+        "description": "Systolic blood pressure (invasive and non-invasive)"
+      },
+      "diastolic_bp": {
+        "itemids": [220051, 220180],
+        "unit": "mmHg",
+        "description": "Diastolic blood pressure"
+      },
+      "mean_arterial_pressure": {
+        "itemids": [220052, 220181],
+        "unit": "mmHg",
+        "description": "Mean arterial pressure (MAP)"
+      },
+      "respiratory_rate": {
+        "itemids": [220210, 224690],
+        "unit": "breaths/min",
+        "description": "Respiratory rate"
+      },
+      "temperature": {
+        "itemids": [223761, 223762],
+        "unit": "Celsius",
+        "description": "Body temperature (Fahrenheit and Celsius)"
+      },
+      "spo2": {
+        "itemids": [220277],
+        "unit": "%",
+        "description": "Oxygen saturation"
+      }
+    },
+    "lab_values": {
+      "lactate": {
+        "itemids": [50813],
+        "unit": "mmol/L",
+        "description": "Lactate level"
+      },
+      "creatinine": {
+        "itemids": [50912],
+        "unit": "mg/dL",
+        "description": "Serum creatinine"
+      },
+      "glucose": {
+        "itemids": [50809, 50931],
+        "unit": "mg/dL",
+        "description": "Blood glucose"
+      },
+      "hemoglobin": {
+        "itemids": [50811, 51222],
+        "unit": "g/dL",
+        "description": "Hemoglobin"
+      },
+      "hematocrit": {
+        "itemids": [50810, 51221],
+        "unit": "%",
+        "description": "Hematocrit"
+      },
+      "wbc": {
+        "itemids": [51300, 51301],
+        "unit": "K/uL",
+        "description": "White blood cell count"
+      },
+      "platelet": {
+        "itemids": [51265],
+        "unit": "K/uL",
+        "description": "Platelet count"
+      },
+      "bun": {
+        "itemids": [51006],
+        "unit": "mg/dL",
+        "description": "Blood urea nitrogen"
+      },
+      "sodium": {
+        "itemids": [50824, 50983],
+        "unit": "mEq/L",
+        "description": "Serum sodium"
+      },
+      "potassium": {
+        "itemids": [50822, 50971],
+        "unit": "mEq/L",
+        "description": "Serum potassium"
+      },
+      "chloride": {
+        "itemids": [50806, 50902],
+        "unit": "mEq/L",
+        "description": "Serum chloride"
+      },
+      "bicarbonate": {
+        "itemids": [50803, 50882],
+        "unit": "mEq/L",
+        "description": "Serum bicarbonate"
+      }
+    },
+    "organ_support": {
+      "mechanical_ventilation": {
+        "itemids": [225792, 225794],
+        "unit": null,
+        "description": "Mechanical ventilation settings"
+      },
+      "vasopressor": {
+        "itemids": [221906, 221289, 221749],
+        "unit": "mcg/kg/min",
+        "description": "Vasopressor medications (norepinephrine, epinephrine, dopamine)"
+      },
+      "rrt": {
+        "itemids": [225805, 225806, 227290],
+        "unit": null,
+        "description": "Renal replacement therapy (dialysis)"
+      }
+    }
+  },
+  "common_icd_codes": {
+    "sepsis": {
+      "icd9": ["995.91", "995.92", "038.0", "038.1", "038.2", "038.3", "038.4", "038.8", "038.9"],
+      "icd10": ["A41.0", "A41.1", "A41.2", "A41.3", "A41.4", "A41.5", "A41.8", "A41.9", "R65.20", "R65.21"]
+    },
+    "acute_kidney_injury": {
+      "icd9": ["584.5", "584.6", "584.7", "584.8", "584.9"],
+      "icd10": ["N17.0", "N17.1", "N17.2", "N17.8", "N17.9"]
+    },
+    "acute_respiratory_failure": {
+      "icd9": ["518.81", "518.82", "518.84"],
+      "icd10": ["J96.00", "J96.01", "J96.02", "J96.20", "J96.21", "J96.22"]
+    },
+    "diabetes": {
+      "icd9": ["250.0", "250.1", "250.2", "250.3", "250.4", "250.5", "250.6", "250.7", "250.8", "250.9"],
+      "icd10": ["E10", "E11", "E13"]
+    },
+    "hypertension": {
+      "icd9": ["401.0", "401.1", "401.9", "402", "403", "404", "405"],
+      "icd10": ["I10", "I11", "I12", "I13", "I15"]
+    },
+    "heart_failure": {
+      "icd9": ["428.0", "428.1", "428.2", "428.3", "428.4", "428.9"],
+      "icd10": ["I50.1", "I50.2", "I50.3", "I50.4", "I50.9"]
+    },
+    "copd": {
+      "icd9": ["491", "492", "493", "494", "496"],
+      "icd10": ["J44.0", "J44.1", "J44.9"]
+    },
+    "pregnancy": {
+      "icd9": ["V22", "V23", "630-677"],
+      "icd10": ["Z33", "Z34", "O00-O9A"]
+    }
+  },
+  "notes": {
+    "age_calculation": "Use anchor_age from hosp.patients + EXTRACT(YEAR FROM admittime) - anchor_year for actual age at admission",
+    "temporal_queries": "Use admittime, charttime, or storetime as reference points depending on context",
+    "missing_values": "Handle NULL values appropriately in WHERE clauses",
+    "duplicate_itemids": "Some measurements have multiple itemids (e.g., invasive vs non-invasive BP) - use IN clause",
+    "icd_version": "Always check icd_version (9 or 10) when filtering by ICD codes"
+  }
+}

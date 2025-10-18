@@ -1,0 +1,162 @@
+{
+  "schema_version": "trial.v1",
+  "disease_code": "I50.9",
+  "inclusion": [
+    {
+      "id": "inc_age_18",
+      "description": "Age >= 18 years",
+      "category": "demographic",
+      "kind": "age_range",
+      "value": {
+        "field": "age",
+        "op": ">=",
+        "value": 18
+      }
+    },
+    {
+      "id": "inc_lvef_le_40",
+      "description": "Left ventricular ejection fraction (LVEF) <= 40%",
+      "category": "measurement",
+      "kind": "value_threshold",
+      "value": {
+        "field": "lvef",
+        "op": "<=",
+        "value": 40
+      }
+    },
+    {
+      "id": "inc_bnp_gt_150",
+      "description": "Elevated BNP > 150 pg/mL",
+      "category": "measurement",
+      "kind": "value_threshold",
+      "value": {
+        "field": "bnp",
+        "op": ">",
+        "value": 150
+      }
+    }
+  ],
+  "exclusion": [
+    {
+      "id": "exc_egfr_lt_30",
+      "description": "Severe renal impairment (eGFR < 30 mL/min/1.73m²)",
+      "category": "measurement",
+      "kind": "value_threshold",
+      "value": {
+        "field": "egfr",
+        "op": "<",
+        "value": 30
+      }
+    }
+  ],
+  "features": [
+    {
+      "name": "age",
+      "source": "patients",
+      "unit": "years",
+      "time_window": null,
+      "metadata": {
+        "column": "anchor_age",
+        "table": "patients",
+        "description": "Patient age at admission"
+      }
+    },
+    {
+      "name": "lvef",
+      "source": "chartevents",
+      "unit": "percent",
+      "time_window": [
+        -48,
+        48
+      ],
+      "metadata": {
+        "itemid": 227008,
+        "concept": "Left Ventricular Ejection Fraction",
+        "table": "chartevents",
+        "description": "Echocardiography-measured LVEF"
+      }
+    },
+    {
+      "name": "bnp",
+      "source": "labevents",
+      "unit": "pg/mL",
+      "time_window": [
+        -24,
+        24
+      ],
+      "metadata": {
+        "itemid": 50823,
+        "concept": "B-type Natriuretic Peptide",
+        "table": "labevents",
+        "description": "Serum BNP biomarker"
+      }
+    },
+    {
+      "name": "egfr",
+      "source": "derived",
+      "unit": "mL/min/1.73m²",
+      "time_window": [
+        -48,
+        48
+      ],
+      "metadata": {
+        "formula": "CKD-EPI",
+        "inputs": [
+          "creatinine",
+          "age",
+          "gender"
+        ],
+        "description": "Estimated glomerular filtration rate"
+      }
+    },
+    {
+      "name": "on_arnI",
+      "source": "prescriptions",
+      "unit": null,
+      "time_window": null,
+      "metadata": {
+        "drug_class": "ARNi",
+        "medications": [
+          "sacubitril",
+          "valsartan",
+          "entresto"
+        ],
+        "table": "prescriptions",
+        "description": "Treatment with angiotensin receptor-neprilysin inhibitor"
+      }
+    },
+    {
+      "name": "mortality_30d",
+      "source": "derived",
+      "unit": "boolean",
+      "time_window": [
+        0,
+        30
+      ],
+      "metadata": {
+        "outcome": true,
+        "description": "30-day all-cause mortality from index time",
+        "calculation": "dod <= index_time + 30 days"
+      }
+    },
+    {
+      "name": "gender",
+      "source": "patients",
+      "unit": null,
+      "time_window": null,
+      "metadata": {
+        "column": "gender",
+        "table": "patients",
+        "description": "Patient biological sex (M/F)"
+      }
+    }
+  ],
+  "provenance": {
+    "source": "trialist_agent",
+    "nct_id": "NCT03389555",
+    "generated_at": "2024-01-15T10:05:00Z",
+    "version": "1.0.0",
+    "method": "enhanced_ner_12domain",
+    "notes": "Pre-built fixture for datathon demo"
+  }
+}

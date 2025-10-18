@@ -1,0 +1,18 @@
+Inclusion Criteria:
+
+- Adult patients aged 18 years or older
+- Diagnosed with septic shock within 24 hours of ICU admission
+- Septic shock defined as:
+  - Suspected or documented infection
+  - Mean arterial pressure (MAP) ≥65 mmHg maintained with vasopressors
+  - Serum lactate >2 mmol/L despite adequate fluid resuscitation
+- Admitted to intensive care unit (ICU)
+
+Exclusion Criteria:
+
+- Age less than 18 years
+- Pregnancy
+- Prior enrollment in this trial
+- Limitations of care or do-not-resuscitate orders
+- Expected death within 24 hours
+- Chronic kidney disease requiring dialysis

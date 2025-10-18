@@ -1,0 +1,197 @@
+{
+  "_comment": "OMOP to MIMIC-IV concept mapping for common clinical trial criteria",
+  "_structure": "Keys are UMLS CUIs, values contain MIMIC table/itemid mappings",
+
+  "demographic": {
+    "age": {
+      "table": "patients",
+      "column": "anchor_age",
+      "data_type": "numeric",
+      "unit": "years"
+    },
+    "gender": {
+      "table": "patients",
+      "column": "gender",
+      "data_type": "categorical",
+      "values": {"M": "male", "F": "female"}
+    }
+  },
+
+  "measurements": {
+    "C0428174": {
+      "concept_name": "BNP (Brain Natriuretic Peptide)",
+      "table": "labevents",
+      "itemids": [50885],
+      "d_labitems_label": "BNP",
+      "unit": "pg/mL",
+      "data_type": "numeric"
+    },
+    "C0006560": {
+      "concept_name": "Pro-BNP (N-terminal pro-BNP)",
+      "table": "labevents",
+      "itemids": [52614],
+      "d_labitems_label": "NT-proBNP",
+      "unit": "pg/mL",
+      "data_type": "numeric"
+    },
+    "C0010294": {
+      "concept_name": "Creatinine",
+      "table": "labevents",
+      "itemids": [50912],
+      "d_labitems_label": "Creatinine",
+      "unit": "mg/dL",
+      "data_type": "numeric"
+    },
+    "C0017654": {
+      "concept_name": "eGFR (estimated Glomerular Filtration Rate)",
+      "table": "labevents",
+      "itemids": [50912],
+      "d_labitems_label": "Creatinine",
+      "unit": "mL/min/1.73m2",
+      "data_type": "numeric",
+      "calculation": "MDRD or CKD-EPI formula from creatinine"
+    },
+    "C0489482": {
+      "concept_name": "LVEF (Left Ventricular Ejection Fraction)",
+      "table": "chartevents",
+      "itemids": [227008],
+      "d_items_label": "EF (%)",
+      "unit": "%",
+      "data_type": "numeric"
+    },
+    "C0019029": {
+      "concept_name": "HbA1c (Hemoglobin A1c)",
+      "table": "labevents",
+      "itemids": [50852],
+      "d_labitems_label": "Hemoglobin A1c",
+      "unit": "%",
+      "data_type": "numeric"
+    },
+    "C0005823": {
+      "concept_name": "Blood Pressure",
+      "table": "chartevents",
+      "itemids": [220050, 220179, 220180],
+      "d_items_label": "Arterial Blood Pressure",
+      "unit": "mmHg",
+      "data_type": "numeric",
+      "components": {
+        "systolic": [220050, 220179],
+        "diastolic": [220051, 220180]
+      }
+    }
+  },
+
+  "conditions": {
+    "C0018799": {
+      "concept_name": "Heart Failure",
+      "table": "diagnoses_icd",
+      "icd9_codes": ["428%", "402.01", "402.11", "402.91", "404.01", "404.03", "404.11", "404.13", "404.91", "404.93"],
+      "icd10_codes": ["I50%", "I11.0", "I13.0", "I13.2"],
+      "data_type": "boolean"
+    },
+    "C0027051": {
+      "concept_name": "Myocardial Infarction",
+      "table": "diagnoses_icd",
+      "icd9_codes": ["410%"],
+      "icd10_codes": ["I21%", "I22%"],
+      "data_type": "boolean"
+    },
+    "C0011847": {
+      "concept_name": "Diabetes Mellitus",
+      "table": "diagnoses_icd",
+      "icd9_codes": ["250%"],
+      "icd10_codes": ["E10%", "E11%", "E13%", "E14%"],
+      "data_type": "boolean"
+    },
+    "C0020538": {
+      "concept_name": "Hypertension",
+      "table": "diagnoses_icd",
+      "icd9_codes": ["401%", "402%", "403%", "404%", "405%"],
+      "icd10_codes": ["I10", "I11%", "I12%", "I13%", "I15%"],
+      "data_type": "boolean"
+    },
+    "C0022658": {
+      "concept_name": "Kidney Disease",
+      "table": "diagnoses_icd",
+      "icd9_codes": ["585%", "586", "587"],
+      "icd10_codes": ["N18%", "N19%"],
+      "data_type": "boolean"
+    },
+    "C0035078": {
+      "concept_name": "Renal Failure",
+      "table": "diagnoses_icd",
+      "icd9_codes": ["584%", "585%", "586"],
+      "icd10_codes": ["N17%", "N18%", "N19"],
+      "data_type": "boolean"
+    },
+    "C0001418": {
+      "concept_name": "Adenocarcinoma",
+      "table": "diagnoses_icd",
+      "icd9_codes": ["140%", "150%", "151%", "153%", "154%", "157%", "162%", "174%", "185"],
+      "icd10_codes": ["C%"],
+      "data_type": "boolean"
+    }
+  },
+
+  "procedures": {
+    "C0011946": {
+      "concept_name": "Dialysis",
+      "table": "procedureevents",
+      "itemids": [225802, 225803, 225805, 225809],
+      "data_type": "boolean"
+    },
+    "C0007430": {
+      "concept_name": "Cardiac Catheterization",
+      "table": "procedures_icd",
+      "icd9_codes": ["37.21", "37.22", "37.23"],
+      "icd10_codes": ["02H%", "02K%"],
+      "data_type": "boolean"
+    },
+    "C0010055": {
+      "concept_name": "Coronary Artery Bypass Graft (CABG)",
+      "table": "procedures_icd",
+      "icd9_codes": ["36.1%"],
+      "icd10_codes": ["021%"],
+      "data_type": "boolean"
+    }
+  },
+
+  "drugs": {
+    "C3653561": {
+      "concept_name": "Sacubitril/Valsartan (Entresto)",
+      "table": "prescriptions",
+      "drug_name_pattern": ["sacubitril", "valsartan", "entresto"],
+      "data_type": "boolean"
+    },
+    "C0084904": {
+      "concept_name": "ARNi (Angiotensin Receptor-Neprilysin Inhibitor)",
+      "table": "prescriptions",
+      "drug_name_pattern": ["sacubitril", "entresto"],
+      "data_type": "boolean"
+    },
+    "C0003015": {
+      "concept_name": "ACE Inhibitor",
+      "table": "prescriptions",
+      "drug_name_pattern": ["lisinopril", "enalapril", "ramipril", "captopril", "perindopril"],
+      "data_type": "boolean"
+    },
+    "C0034802": {
+      "concept_name": "ARB (Angiotensin Receptor Blocker)",
+      "table": "prescriptions",
+      "drug_name_pattern": ["losartan", "valsartan", "candesartan", "irbesartan", "olmesartan"],
+      "data_type": "boolean"
+    },
+    "C0001645": {
+      "concept_name": "Beta Blocker",
+      "table": "prescriptions",
+      "drug_name_pattern": ["metoprolol", "carvedilol", "bisoprolol", "atenolol", "propranolol"],
+      "data_type": "boolean"
+    },
+    "C0012798": {
+      "concept_name": "Diuretic",
+      "table": "prescriptions",
+      "drug_name_pattern": ["furosemide", "lasix", "torsemide", "bumetanide", "hydrochlorothiazide", "spironolactone"],
+      "data_type": "boolean"
+    }
+  }
+}

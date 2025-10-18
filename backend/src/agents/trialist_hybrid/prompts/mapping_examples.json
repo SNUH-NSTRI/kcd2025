@@ -1,0 +1,255 @@
+{
+  "version": "1.0",
+  "description": "Real-world examples of clinical trial criteria mapped to MIMIC-IV database",
+  "language": "ko",
+  "examples": {
+    "inclusion_criteria": [
+      {
+        "criterion": "30ml/kg of intravenous crystalloid fluid for lactic acid >4 and/or systolic blood pressure <90mmHg / mean arterial pressure <65mmHg",
+        "mapping": [
+          "hosp.labevents에서 itemid = 50813(Lactate)의 valuenum > 4 인지 확인. 채취 시점은 hosp.labevents.charttime",
+          "icu.chartevents에서 수축기 혈압(SBP, itemid 220050(ABP), 220179(NBP)) < 90 이거나 평균 동맥압(MAP, itemid 220052(ABP), 220181(NBP)) < 65 인지 확인. 혈압 측정 시점은 icu.chartevents.charttime"
+        ],
+        "category": "lab_vital_combined"
+      },
+      {
+        "criterion": "Broad spectrum antibiotics given after obtaining blood cultures",
+        "mapping": [
+          "hosp.microbiologyevents에서 spec_type_desc = 'BLOOD CULTURE'인 기록의 charttime을 확인",
+          "mimiciv_derived.antibiotics에서 항생제 투여 기록의 starttime을 확인",
+          "항생제 투여 시작 시간이 혈액 배양 채취 시간 이후인지 확인"
+        ],
+        "category": "procedure_medication_temporal"
+      },
+      {
+        "criterion": "Age >= 18 years",
+        "mapping": [
+          "hosp.patients(anchor_year/anchor_age) + hosp.admissions(admittime)을 사용해 입원 시 나이 계산",
+          "계산식: anchor_age + EXTRACT(YEAR FROM admittime) - anchor_year >= 18"
+        ],
+        "category": "demographic"
+      },
+      {
+        "criterion": "Septic shock with MAP ≥65 mmHg and serum lactate >2 mmol/L",
+        "mapping": [
+          "icu.chartevents에서 itemid IN (220052, 220181)로 MAP 확인, valuenum >= 65",
+          "hosp.labevents에서 itemid = 50813으로 lactate 확인, valuenum > 2",
+          "두 조건이 동시에 만족하는 시점 확인 (시간 윈도우: ±6시간)"
+        ],
+        "category": "condition_complex"
+      },
+      {
+        "criterion": "Norepinephrine dose ≥ 0.1 µg/kg/min for ≥ 6 hours",
+        "mapping": [
+          "icu.inputevents에서 norepinephrine 투여 기록 확인",
+          "itemid 221906 (Norepinephrine) 사용",
+          "rate (amount/weight) >= 0.1 확인",
+          "starttime과 endtime 차이가 6시간 이상인지 확인"
+        ],
+        "category": "medication_dose_duration"
+      },
+      {
+        "criterion": "Mechanical ventilation within 24 hours of ICU admission",
+        "mapping": [
+          "icu.procedureevents에서 itemid IN (225792, 225794) 확인 (mechanical ventilation)",
+          "또는 icu.chartevents에서 itemid = 720 (ventilator mode) 확인",
+          "icu.icustays의 intime과 비교하여 24시간 이내 확인",
+          "시간 조건: charttime BETWEEN intime AND intime + INTERVAL '24 hours'"
+        ],
+        "category": "procedure_temporal"
+      },
+      {
+        "criterion": "Acute kidney injury (KDIGO Stage 2 or higher)",
+        "mapping": [
+          "hosp.labevents에서 itemid = 50912 (Creatinine) 확인",
+          "Baseline creatinine 대비 2배 이상 증가 확인",
+          "또는 hosp.diagnoses_icd에서 ICD-10: N17 (Acute kidney failure) 확인"
+        ],
+        "category": "condition_lab_based"
+      },
+      {
+        "criterion": "Glasgow Coma Scale (GCS) < 12",
+        "mapping": [
+          "icu.chartevents에서 GCS 관련 itemid 확인:",
+          "  - itemid 220739: GCS - Eye Opening",
+          "  - itemid 223900: GCS - Verbal Response",
+          "  - itemid 223901: GCS - Motor Response",
+          "세 값의 합이 12 미만인지 확인",
+          "또는 itemid 198 (GCS Total) 직접 사용"
+        ],
+        "category": "measurement_score"
+      }
+    ],
+    "exclusion_criteria": [
+      {
+        "criterion": "Age < 18 years",
+        "mapping": [
+          "hosp.patients(anchor_year/anchor_age) + hosp.admissions(admittime)을 사용해 입원 시 나이 계산",
+          "계산식: anchor_age + EXTRACT(YEAR FROM admittime) - anchor_year < 18"
+        ],
+        "category": "demographic"
+      },
+      {
+        "criterion": "Pregnant",
+        "mapping": [
+          "hosp.diagnoses_icd에서 임신/산과 관련 ICD-10 코드(O00-O9A, Z33-Z36)로 제외",
+          "또는 ICD-9: 630-679, V22-V24"
+        ],
+        "category": "condition"
+      },
+      {
+        "criterion": "Primary admitting diagnosis of acute cerebral vascular event",
+        "mapping": [
+          "hosp.diagnoses_icd 테이블에서 seq_num=1에 해당하는 진단 확인",
+          "ICD-10: I60-I69 (뇌혈관 질환)",
+          "ICD-9: 430-438"
+        ],
+        "category": "primary_diagnosis"
+      },
+      {
+        "criterion": "Primary admitting diagnosis of acute coronary syndrome",
+        "mapping": [
+          "hosp.diagnoses_icd 테이블에서 seq_num=1에 해당하는 진단 확인",
+          "ICD-10: I20-I25 (허혈성 심장 질환)",
+          "ICD-9: 410-414"
+        ],
+        "category": "primary_diagnosis"
+      },
+      {
+        "criterion": "Primary admitting diagnosis of active gastrointestinal bleeding",
+        "mapping": [
+          "hosp.diagnoses_icd 테이블에서 seq_num=1에 해당하는 진단 확인",
+          "ICD-10: K92.0, K92.1, K92.2 (위장관 출혈)",
+          "ICD-9: 578.0, 578.1, 578.9"
+        ],
+        "category": "primary_diagnosis"
+      },
+      {
+        "criterion": "Primary admitting diagnosis of burn",
+        "mapping": [
+          "hosp.diagnoses_icd 테이블에서 seq_num=1에 해당하는 진단 확인",
+          "ICD-10: T20-T32 (화상)",
+          "ICD-9: 940-949"
+        ],
+        "category": "primary_diagnosis"
+      },
+      {
+        "criterion": "Primary admitting diagnosis of trauma",
+        "mapping": [
+          "hosp.diagnoses_icd 테이블에서 seq_num=1에 해당하는 진단 확인",
+          "ICD-10: S00-T14 (손상, 중독 및 외인에 의한 특정 기타 결과)",
+          "ICD-9: 800-959"
+        ],
+        "category": "primary_diagnosis"
+      },
+      {
+        "criterion": "Patients with HIV and CD4 < 50 cells/mm³",
+        "mapping": [
+          "hosp.diagnoses_icd에서 HIV 진단 확인:",
+          "  - ICD-10: B20 (Human immunodeficiency virus disease)",
+          "  - ICD-9: 042",
+          "hosp.labevents에서 itemid = 51131 (Absolute CD4 Count)의 valuenum < 50 확인"
+        ],
+        "category": "condition_lab_combined"
+      },
+      {
+        "criterion": "Patients with known glucose-6-phosphate dehydrogenase (G-6PD) deficiency",
+        "mapping": [
+          "hosp.diagnoses_icd에서 G6PD deficiency 진단 확인:",
+          "  - ICD-10: D55.0 (G6PD deficiency anemia)",
+          "  - ICD-9: 282.2"
+        ],
+        "category": "condition"
+      },
+      {
+        "criterion": "Patients with sepsis/septic shock transferred from another hospital",
+        "mapping": [
+          "hosp.admissions 테이블의 admission_location = 'TRANSFER FROM HOSPITAL' 확인",
+          "AND hosp.diagnoses_icd에서 sepsis 관련 코드 확인:",
+          "  - ICD-10: A41 (Other sepsis), R65.20 (Severe sepsis), R65.21 (Septic shock)",
+          "  - ICD-9: 995.91, 995.92"
+        ],
+        "category": "admission_type_condition"
+      },
+      {
+        "criterion": "Do-not-resuscitate (DNR) status",
+        "mapping": [
+          "icu.chartevents에서 itemid = 128 (Code Status) 확인",
+          "value에 'DNR', 'Do Not Resuscitate', 'CMO' (Comfort Measures Only) 포함 여부 확인",
+          "또는 hosp.admissions의 discharge_location = 'HOSPICE' 확인"
+        ],
+        "category": "care_directive"
+      },
+      {
+        "criterion": "Absolute neutrophil count < 500 cells/mm³",
+        "mapping": [
+          "hosp.labevents에서 절대 호중구 수 확인:",
+          "  - itemid = 51256 (Neutrophils, Absolute)",
+          "  - valuenum < 500 확인"
+        ],
+        "category": "lab_value"
+      },
+      {
+        "criterion": "Requirement for immediate surgery",
+        "mapping": [
+          "hosp.procedures_icd에서 수술 관련 procedure 확인",
+          "chartdate가 admittime과 동일하거나 ±24시간 이내인지 확인",
+          "또는 icu.procedureevents에서 긴급 수술 itemid 확인"
+        ],
+        "category": "procedure_urgency"
+      },
+      {
+        "criterion": "End-stage liver disease (Child-Pugh Class C)",
+        "mapping": [
+          "hosp.diagnoses_icd에서 간경변증 확인:",
+          "  - ICD-10: K74.6 (Other and unspecified cirrhosis of liver)",
+          "  - ICD-9: 571.5",
+          "Child-Pugh 점수 계산을 위한 lab values:",
+          "  - Bilirubin (itemid 50885): > 3 mg/dL",
+          "  - Albumin (itemid 50862): < 2.8 g/dL",
+          "  - INR (itemid 51237): > 2.3",
+          "  - Ascites: icu.chartevents에서 확인",
+          "  - Encephalopathy: hosp.diagnoses_icd에서 ICD-10 K72.9 확인"
+        ],
+        "category": "condition_score_based"
+      },
+      {
+        "criterion": "Known allergy to penicillin",
+        "mapping": [
+          "hosp.diagnoses_icd에서 알레르기 진단 확인:",
+          "  - ICD-10: Z88.0 (Allergy status to penicillin)",
+          "  - ICD-9: V14.0",
+          "또는 icu.chartevents에서 allergy 관련 itemid 확인"
+        ],
+        "category": "allergy"
+      }
+    ]
+  },
+  "categories": {
+    "demographic": "나이, 성별, 인종 등 인구통계학적 기준",
+    "condition": "질병, 진단 기준",
+    "condition_complex": "복합 조건 (여러 측정값 조합)",
+    "condition_lab_based": "Lab 값 기반 질병 정의",
+    "condition_lab_combined": "진단 + Lab 값 조합",
+    "condition_score_based": "점수 기반 질병 중증도",
+    "primary_diagnosis": "주 진단명 (seq_num=1)",
+    "lab_value": "단순 Lab 수치 기준",
+    "lab_vital_combined": "Lab + Vital signs 조합",
+    "measurement_score": "점수 측정 (GCS, SOFA 등)",
+    "medication_dose_duration": "약물 용량 + 지속시간",
+    "procedure_medication_temporal": "시술 + 약물 + 시간 순서",
+    "procedure_temporal": "시술 + 시간 조건",
+    "procedure_urgency": "긴급 시술 여부",
+    "admission_type_condition": "입원 유형 + 진단 조합",
+    "care_directive": "치료 지침 (DNR 등)",
+    "allergy": "알레르기 정보"
+  },
+  "notes": [
+    "seq_num=1: 주 진단명 (primary diagnosis)",
+    "seq_num>1: 부진단명 (secondary diagnosis)",
+    "시간 계산 시 PostgreSQL 문법 사용: INTERVAL '24 hours', EXTRACT(YEAR FROM ...)",
+    "Join 조건: subject_id (환자), hadm_id (입원), stay_id (ICU 체류)",
+    "itemid는 MIMIC-IV 공식 문서에서 확인 필요",
+    "ICD 코드는 버전 9와 10 모두 고려 (icd_version 컬럼 확인)"
+  ]
+}

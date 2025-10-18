@@ -1,0 +1,16 @@
+{
+  "nct_id": "NCT03389555",
+  "cache_version": "1.0",
+  "cache_status": "validated",
+  "created_at": "2025-10-18T00:00:00Z",
+  "validated_at": "2025-10-18T01:00:00Z",
+  "validated_by": "user@example.com",
+  "validation_notes": "Manually verified all mappings against MIMIC-IV v3.1",
+  "total_criteria": 15,
+  "accuracy_score": 0.95,
+  "mimic_version": "3.1",
+  "pipeline_version": "2.0",
+  "criteria_hash": "abc123def456",
+  "reuse_count": 0,
+  "last_used_at": null
+}

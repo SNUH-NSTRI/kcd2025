@@ -1,0 +1,271 @@
+{
+  "version": "2.0",
+  "description": "Precise MIMIC-IV mapping examples with actual table names, itemids, and column names",
+  "focus": "Exact database references for operationalization",
+  "examples": {
+    "age_demographic": {
+      "criterion": "Age >= 18 years",
+      "table": "hosp.patients",
+      "columns": ["anchor_age", "anchor_year"],
+      "join_required": {
+        "table": "hosp.admissions",
+        "columns": ["admittime"],
+        "condition": "hosp.patients.subject_id = hosp.admissions.subject_id"
+      },
+      "sql_condition": "anchor_age + EXTRACT(YEAR FROM hosp.admissions.admittime) - anchor_year >= 18"
+    },
+    "lactate_lab": {
+      "criterion": "Lactate > 2 mmol/L",
+      "table": "hosp.labevents",
+      "columns": ["itemid", "valuenum", "valueuom", "charttime"],
+      "itemid": 50813,
+      "itemid_label": "Lactate",
+      "sql_condition": "itemid = 50813 AND valuenum > 2"
+    },
+    "map_vital": {
+      "criterion": "Mean arterial pressure < 65 mmHg",
+      "table": "icu.chartevents",
+      "columns": ["itemid", "valuenum", "valueuom", "charttime"],
+      "itemids": [220052, 220181],
+      "itemid_labels": ["Arterial Blood Pressure mean", "Non Invasive Blood Pressure mean"],
+      "sql_condition": "itemid IN (220052, 220181) AND valuenum < 65"
+    },
+    "sbp_vital": {
+      "criterion": "Systolic blood pressure < 90 mmHg",
+      "table": "icu.chartevents",
+      "columns": ["itemid", "valuenum", "charttime"],
+      "itemids": [220050, 220179],
+      "itemid_labels": ["Arterial Blood Pressure systolic", "Non Invasive Blood Pressure systolic"],
+      "sql_condition": "itemid IN (220050, 220179) AND valuenum < 90"
+    },
+    "sepsis_diagnosis": {
+      "criterion": "Septic shock",
+      "table": "hosp.diagnoses_icd",
+      "columns": ["icd_code", "icd_version", "seq_num"],
+      "icd_codes": {
+        "icd9": ["995.91", "995.92"],
+        "icd10": ["A41.9", "R65.20", "R65.21"]
+      },
+      "sql_condition": "(icd_code IN ('995.91', '995.92') AND icd_version = 9) OR (icd_code IN ('A41.9', 'R65.20', 'R65.21') AND icd_version = 10)"
+    },
+    "norepinephrine_medication": {
+      "criterion": "Norepinephrine >= 0.1 mcg/kg/min for >= 6 hours",
+      "table": "icu.inputevents",
+      "columns": ["itemid", "rate", "amount", "amountuom", "starttime", "endtime"],
+      "itemid": 221906,
+      "itemid_label": "Norepinephrine",
+      "sql_condition": "itemid = 221906 AND rate >= 0.1 AND (endtime - starttime) >= INTERVAL '6 hours'"
+    },
+    "creatinine_lab": {
+      "criterion": "Creatinine > 1.5 mg/dL",
+      "table": "hosp.labevents",
+      "columns": ["itemid", "valuenum", "valueuom", "charttime"],
+      "itemid": 50912,
+      "itemid_label": "Creatinine",
+      "sql_condition": "itemid = 50912 AND valuenum > 1.5"
+    },
+    "heart_rate_vital": {
+      "criterion": "Heart rate > 100 bpm",
+      "table": "icu.chartevents",
+      "columns": ["itemid", "valuenum", "charttime"],
+      "itemid": 220045,
+      "itemid_label": "Heart Rate",
+      "sql_condition": "itemid = 220045 AND valuenum > 100"
+    },
+    "temperature_vital": {
+      "criterion": "Temperature > 38°C",
+      "table": "icu.chartevents",
+      "columns": ["itemid", "valuenum", "charttime"],
+      "itemids": [223761, 223762],
+      "itemid_labels": ["Temperature Fahrenheit", "Temperature Celsius"],
+      "sql_condition": "(itemid = 223762 AND valuenum > 38) OR (itemid = 223761 AND (valuenum - 32) * 5/9 > 38)",
+      "note": "itemid 223762 is Celsius, 223761 is Fahrenheit"
+    },
+    "mechanical_ventilation": {
+      "criterion": "Mechanical ventilation within 24 hours",
+      "table": "icu.procedureevents",
+      "columns": ["itemid", "starttime", "endtime"],
+      "itemids": [225792, 225794],
+      "itemid_labels": ["Intubation", "Extubation"],
+      "temporal_join": {
+        "table": "icu.icustays",
+        "columns": ["intime"],
+        "condition": "charttime BETWEEN intime AND intime + INTERVAL '24 hours'"
+      }
+    },
+    "glucose_lab": {
+      "criterion": "Glucose < 70 mg/dL",
+      "table": "hosp.labevents",
+      "columns": ["itemid", "valuenum", "charttime"],
+      "itemids": [50809, 50931],
+      "itemid_labels": ["Glucose (whole blood)", "Glucose (serum)"],
+      "sql_condition": "itemid IN (50809, 50931) AND valuenum < 70"
+    },
+    "gcs_score": {
+      "criterion": "Glasgow Coma Scale < 12",
+      "table": "icu.chartevents",
+      "columns": ["itemid", "valuenum", "charttime"],
+      "itemids": [220739, 223900, 223901],
+      "itemid_labels": ["GCS - Eye Opening", "GCS - Verbal Response", "GCS - Motor Response"],
+      "sql_condition": "itemid IN (220739, 223900, 223901)",
+      "note": "Sum all three components, or use itemid 198 for GCS Total"
+    },
+    "pregnant_diagnosis": {
+      "criterion": "Pregnancy",
+      "table": "hosp.diagnoses_icd",
+      "columns": ["icd_code", "icd_version"],
+      "icd_codes": {
+        "icd9": ["630-679", "V22", "V23", "V24"],
+        "icd10": ["O00-O9A", "Z33", "Z34", "Z35", "Z36"]
+      },
+      "sql_condition": "(icd_code LIKE 'O%' AND icd_version = 10) OR (icd_code BETWEEN '630' AND '679' AND icd_version = 9)"
+    },
+    "stroke_primary_diagnosis": {
+      "criterion": "Primary diagnosis of acute cerebrovascular event",
+      "table": "hosp.diagnoses_icd",
+      "columns": ["icd_code", "icd_version", "seq_num"],
+      "icd_codes": {
+        "icd9": ["430-438"],
+        "icd10": ["I60-I69"]
+      },
+      "sql_condition": "seq_num = 1 AND ((icd_code BETWEEN 'I60' AND 'I69' AND icd_version = 10) OR (icd_code BETWEEN '430' AND '438' AND icd_version = 9))",
+      "note": "seq_num=1 indicates primary diagnosis"
+    },
+    "aki_diagnosis": {
+      "criterion": "Acute kidney injury",
+      "table": "hosp.diagnoses_icd",
+      "columns": ["icd_code", "icd_version"],
+      "icd_codes": {
+        "icd9": ["584.5", "584.9"],
+        "icd10": ["N17.0", "N17.1", "N17.2", "N17.8", "N17.9"]
+      }
+    },
+    "cd4_count": {
+      "criterion": "CD4 count < 50 cells/mm³",
+      "table": "hosp.labevents",
+      "columns": ["itemid", "valuenum", "charttime"],
+      "itemid": 51131,
+      "itemid_label": "Absolute CD4 Count",
+      "sql_condition": "itemid = 51131 AND valuenum < 50"
+    },
+    "hiv_diagnosis": {
+      "criterion": "HIV infection",
+      "table": "hosp.diagnoses_icd",
+      "columns": ["icd_code", "icd_version"],
+      "icd_codes": {
+        "icd9": ["042"],
+        "icd10": ["B20"]
+      },
+      "sql_condition": "(icd_code = 'B20' AND icd_version = 10) OR (icd_code = '042' AND icd_version = 9)"
+    },
+    "transfer_from_hospital": {
+      "criterion": "Transferred from another hospital",
+      "table": "hosp.admissions",
+      "columns": ["admission_location"],
+      "sql_condition": "admission_location = 'TRANSFER FROM HOSPITAL'"
+    },
+    "dnr_status": {
+      "criterion": "Do not resuscitate status",
+      "table": "icu.chartevents",
+      "columns": ["itemid", "value", "charttime"],
+      "itemid": 128,
+      "itemid_label": "Code Status",
+      "sql_condition": "itemid = 128 AND value IN ('DNR', 'Do Not Resuscitate', 'CMO')"
+    },
+    "neutrophil_count": {
+      "criterion": "Absolute neutrophil count < 500 cells/mm³",
+      "table": "hosp.labevents",
+      "columns": ["itemid", "valuenum", "charttime"],
+      "itemid": 51256,
+      "itemid_label": "Neutrophils, Absolute",
+      "sql_condition": "itemid = 51256 AND valuenum < 500"
+    },
+    "platelet_count": {
+      "criterion": "Platelet count < 100,000/µL",
+      "table": "hosp.labevents",
+      "columns": ["itemid", "valuenum", "charttime"],
+      "itemid": 51265,
+      "itemid_label": "Platelet Count",
+      "sql_condition": "itemid = 51265 AND valuenum < 100"
+    }
+  },
+  "common_tables": {
+    "hosp.patients": {
+      "description": "Patient demographics",
+      "key_columns": ["subject_id", "gender", "anchor_age", "anchor_year", "dod"]
+    },
+    "hosp.admissions": {
+      "description": "Hospital admissions",
+      "key_columns": ["hadm_id", "subject_id", "admittime", "dischtime", "admission_location", "discharge_location"]
+    },
+    "hosp.diagnoses_icd": {
+      "description": "ICD-9/10 diagnoses",
+      "key_columns": ["hadm_id", "subject_id", "icd_code", "icd_version", "seq_num"]
+    },
+    "hosp.labevents": {
+      "description": "Laboratory measurements",
+      "key_columns": ["labevent_id", "subject_id", "hadm_id", "itemid", "charttime", "valuenum", "valueuom"]
+    },
+    "icu.chartevents": {
+      "description": "ICU vital signs and measurements",
+      "key_columns": ["subject_id", "hadm_id", "stay_id", "itemid", "charttime", "valuenum", "valueuom"]
+    },
+    "icu.inputevents": {
+      "description": "ICU medication inputs",
+      "key_columns": ["subject_id", "hadm_id", "stay_id", "itemid", "starttime", "endtime", "amount", "rate"]
+    },
+    "icu.procedureevents": {
+      "description": "ICU procedures",
+      "key_columns": ["subject_id", "hadm_id", "stay_id", "itemid", "starttime", "endtime"]
+    }
+  },
+  "critical_itemids": {
+    "vital_signs": {
+      "heart_rate": 220045,
+      "sbp_invasive": 220050,
+      "dbp_invasive": 220051,
+      "map_invasive": 220052,
+      "sbp_noninvasive": 220179,
+      "dbp_noninvasive": 220180,
+      "map_noninvasive": 220181,
+      "respiratory_rate": 220210,
+      "spo2": 220277,
+      "temperature_f": 223761,
+      "temperature_c": 223762
+    },
+    "lab_values": {
+      "lactate": 50813,
+      "creatinine": 50912,
+      "glucose_blood": 50809,
+      "glucose_serum": 50931,
+      "hemoglobin": 51222,
+      "platelet": 51265,
+      "wbc": 51301,
+      "neutrophils": 51256,
+      "cd4": 51131,
+      "bilirubin_total": 50885,
+      "albumin": 50862,
+      "inr": 51237
+    },
+    "medications": {
+      "norepinephrine": 221906,
+      "epinephrine": 221289,
+      "vasopressin": 222315,
+      "dopamine": 221662,
+      "dobutamine": 221653
+    },
+    "scores": {
+      "gcs_eye": 220739,
+      "gcs_verbal": 223900,
+      "gcs_motor": 223901,
+      "gcs_total": 198
+    }
+  },
+  "mapping_rules": {
+    "age_calculation": "anchor_age + EXTRACT(YEAR FROM admittime) - anchor_year",
+    "primary_diagnosis": "seq_num = 1 in hosp.diagnoses_icd",
+    "temporal_within": "charttime BETWEEN reference_time AND reference_time + INTERVAL 'X hours'",
+    "join_pattern": "Always join on subject_id, optionally hadm_id or stay_id",
+    "icd_version": "Check both icd_version = 9 and icd_version = 10"
+  }
+}

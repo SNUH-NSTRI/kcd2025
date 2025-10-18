@@ -1,0 +1,592 @@
+version: '1.0'
+description: MIMIC-IV Medications (ICU 입실 후 24h 처방)
+total_medications: 20
+total_features: 100
+time_window: ICU intime to intime + 24h
+medication_routes:
+- IV
+- IV DRIP
+- IV BOLUS
+- PO
+- PO/NG
+- SC
+- PR
+- TP
+- DIALYS
+- DWELL
+steroids:
+  description: 코르티코스테로이드
+  clinical_use: 패혈성쇼크, 부신기능부전, 염증 억제
+  medications:
+  - name: hydrocortisone
+    korean: 하이드로코티손
+    atc_code: H02AB09
+    typical_dose: 100-300 mg/day
+    typical_routes:
+    - IV
+    - PO
+    - PR
+    features:
+    - column: hydrocortisone_used
+      type: binary
+      description: 사용여부
+    - column: hydrocortisone_route
+      type: categorical
+      description: 투여경로
+    - column: hydrocortisone_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: hydrocortisone_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: hydrocortisone_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: methylprednisolone
+    korean: 메틸프레드니솔론
+    atc_code: H02AB04
+    typical_dose: 40-125 mg/day
+    typical_routes:
+    - IV
+    - PO
+    features:
+    - column: methylprednisolone_used
+      type: binary
+      description: 사용여부
+    - column: methylprednisolone_route
+      type: categorical
+      description: 투여경로
+    - column: methylprednisolone_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: methylprednisolone_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: methylprednisolone_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: dexamethasone
+    korean: 덱사메타손
+    atc_code: H02AB02
+    typical_dose: 4-16 mg/day
+    typical_routes:
+    - IV
+    - PO
+    features:
+    - column: dexamethasone_used
+      type: binary
+      description: 사용여부
+    - column: dexamethasone_route
+      type: categorical
+      description: 투여경로
+    - column: dexamethasone_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: dexamethasone_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: dexamethasone_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: prednisone
+    korean: 프레드니손
+    atc_code: H02AB07
+    typical_dose: 5-60 mg/day
+    typical_routes:
+    - PO
+    features:
+    - column: prednisone_used
+      type: binary
+      description: 사용여부
+    - column: prednisone_route
+      type: categorical
+      description: 투여경로
+    - column: prednisone_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: prednisone_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: prednisone_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+sedatives_analgesics:
+  description: 진정제 및 진통제
+  clinical_use: 기계환기 중 진정, 통증 조절
+  medications:
+  - name: propofol
+    korean: 프로포폴
+    atc_code: N01AX10
+    typical_dose: 25-75 mcg/kg/min
+    typical_routes:
+    - IV DRIP
+    features:
+    - column: propofol_used
+      type: binary
+      description: 사용여부
+    - column: propofol_route
+      type: categorical
+      description: 투여경로
+    - column: propofol_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: propofol_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: propofol_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: midazolam
+    korean: 미다졸람
+    atc_code: N05CD08
+    typical_dose: 0.02-0.1 mg/kg/h
+    typical_routes:
+    - IV
+    - IV DRIP
+    features:
+    - column: midazolam_used
+      type: binary
+      description: 사용여부
+    - column: midazolam_route
+      type: categorical
+      description: 투여경로
+    - column: midazolam_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: midazolam_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: midazolam_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: fentanyl
+    korean: 펜타닐
+    atc_code: N01AH01
+    typical_dose: 25-200 mcg/h
+    typical_routes:
+    - IV
+    - IV DRIP
+    features:
+    - column: fentanyl_used
+      type: binary
+      description: 사용여부
+    - column: fentanyl_route
+      type: categorical
+      description: 투여경로
+    - column: fentanyl_dose_total
+      type: numeric
+      unit: mcg
+      description: 총용량
+      note: mg와 mcg 혼재 가능
+    - column: fentanyl_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: fentanyl_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: dexmedetomidine
+    korean: 덱스메데토미딘
+    atc_code: N05CM18
+    typical_dose: 0.2-0.7 mcg/kg/h
+    typical_routes:
+    - IV DRIP
+    features:
+    - column: dexmedetomidine_used
+      type: binary
+      description: 사용여부
+    - column: dexmedetomidine_route
+      type: categorical
+      description: 투여경로
+    - column: dexmedetomidine_dose_total
+      type: numeric
+      unit: mcg
+      description: 총용량
+    - column: dexmedetomidine_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: dexmedetomidine_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+antibiotics:
+  description: 항생제
+  clinical_use: 세균 감염 치료 및 예방
+  medications:
+  - name: vancomycin
+    korean: 반코마이신
+    atc_code: J01XA01
+    class: glycopeptide
+    spectrum: gram_positive
+    typical_dose: 1-2 g/day
+    typical_routes:
+    - IV
+    - PO/NG
+    features:
+    - column: vancomycin_used
+      type: binary
+      description: 사용여부
+    - column: vancomycin_route
+      type: categorical
+      description: 투여경로
+    - column: vancomycin_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: vancomycin_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: vancomycin_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: piperacillin_tazobactam
+    korean: 피페라실린-타조박탐
+    atc_code: J01CR05
+    class: beta_lactam
+    spectrum: broad_spectrum
+    typical_dose: 3.375-4.5 g q6-8h
+    typical_routes:
+    - IV
+    features:
+    - column: piperacillin_tazobactam_used
+      type: binary
+      description: 사용여부
+    - column: piperacillin_tazobactam_route
+      type: categorical
+      description: 투여경로
+    - column: piperacillin_tazobactam_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: piperacillin_tazobactam_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: piperacillin_tazobactam_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: ceftriaxone
+    korean: 세프트리악손
+    atc_code: J01DD04
+    class: cephalosporin_3rd
+    spectrum: broad_spectrum
+    typical_dose: 1-2 g/day
+    typical_routes:
+    - IV
+    features:
+    - column: ceftriaxone_used
+      type: binary
+      description: 사용여부
+    - column: ceftriaxone_route
+      type: categorical
+      description: 투여경로
+    - column: ceftriaxone_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: ceftriaxone_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: ceftriaxone_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: meropenem
+    korean: 메로페넴
+    atc_code: J01DH02
+    class: carbapenem
+    spectrum: broad_spectrum
+    typical_dose: 1 g q8h
+    typical_routes:
+    - IV
+    features:
+    - column: meropenem_used
+      type: binary
+      description: 사용여부
+    - column: meropenem_route
+      type: categorical
+      description: 투여경로
+    - column: meropenem_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: meropenem_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: meropenem_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: levofloxacin
+    korean: 레보플록사신
+    atc_code: J01MA12
+    class: fluoroquinolone
+    spectrum: broad_spectrum
+    typical_dose: 500-750 mg/day
+    typical_routes:
+    - IV
+    - PO
+    features:
+    - column: levofloxacin_used
+      type: binary
+      description: 사용여부
+    - column: levofloxacin_route
+      type: categorical
+      description: 투여경로
+    - column: levofloxacin_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: levofloxacin_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: levofloxacin_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+cardiovascular:
+  description: 심혈관계 약물
+  clinical_use: 혈당 조절, 이뇨, 항응고, 혈압 조절
+  medications:
+  - name: insulin
+    korean: 인슐린
+    atc_code: A10A
+    typical_dose: variable
+    typical_routes:
+    - SC
+    - IV DRIP
+    features:
+    - column: insulin_used
+      type: binary
+      description: 사용여부
+    - column: insulin_route
+      type: categorical
+      description: 투여경로
+    - column: insulin_dose_total
+      type: numeric
+      unit: Units
+      description: 총용량
+      note: dose_total이 100% missing - 단위 문제 가능
+    - column: insulin_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: insulin_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: furosemide
+    korean: 푸로세마이드
+    atc_code: C03CA01
+    class: loop_diuretic
+    typical_dose: 20-80 mg/day
+    typical_routes:
+    - IV
+    - PO
+    features:
+    - column: furosemide_used
+      type: binary
+      description: 사용여부
+    - column: furosemide_route
+      type: categorical
+      description: 투여경로
+    - column: furosemide_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: furosemide_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: furosemide_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: heparin
+    korean: 헤파린
+    atc_code: B01AB01
+    typical_dose: 5000-35000 Units/day
+    typical_routes:
+    - IV
+    - SC
+    features:
+    - column: heparin_used
+      type: binary
+      description: 사용여부
+    - column: heparin_route
+      type: categorical
+      description: 투여경로
+    - column: heparin_dose_total
+      type: numeric
+      unit: Units
+      description: 총용량
+      note: dose_total이 100% missing - 단위 문제 가능
+    - column: heparin_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: heparin_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: metoprolol
+    korean: 메토프롤롤
+    atc_code: C07AB02
+    class: beta_blocker
+    typical_dose: 25-100 mg BID
+    typical_routes:
+    - IV
+    - PO
+    features:
+    - column: metoprolol_used
+      type: binary
+      description: 사용여부
+    - column: metoprolol_route
+      type: categorical
+      description: 투여경로
+    - column: metoprolol_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+    - column: metoprolol_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: metoprolol_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+vasopressors_inotropes:
+  description: 승압제 및 강심제
+  clinical_use: 쇼크 상태에서 혈압 유지, 심박출량 증가
+  medications:
+  - name: dopamine
+    korean: 도파민
+    atc_code: C01CA04
+    typical_dose: 2-20 mcg/kg/min
+    typical_routes:
+    - IV DRIP
+    features:
+    - column: dopamine_used
+      type: binary
+      description: 사용여부
+    - column: dopamine_route
+      type: categorical
+      description: 투여경로
+    - column: dopamine_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+      note: mg와 mcg 혼재 가능
+    - column: dopamine_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: dopamine_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: dobutamine
+    korean: 도부타민
+    atc_code: C01CA07
+    typical_dose: 2-20 mcg/kg/min
+    typical_routes:
+    - IV DRIP
+    features:
+    - column: dobutamine_used
+      type: binary
+      description: 사용여부
+    - column: dobutamine_route
+      type: categorical
+      description: 투여경로
+    - column: dobutamine_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+      note: mg와 mcg 혼재 가능
+    - column: dobutamine_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: dobutamine_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: phenylephrine
+    korean: 페닐에프린
+    atc_code: C01CA06
+    typical_dose: 0.5-3 mcg/kg/min
+    typical_routes:
+    - IV DRIP
+    features:
+    - column: phenylephrine_used
+      type: binary
+      description: 사용여부
+    - column: phenylephrine_route
+      type: categorical
+      description: 투여경로
+    - column: phenylephrine_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+      note: mg와 mcg 혼재 가능
+    - column: phenylephrine_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: phenylephrine_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B
+  - name: milrinone
+    korean: 밀리논
+    atc_code: C01CE02
+    typical_dose: 0.375-0.75 mcg/kg/min
+    typical_routes:
+    - IV DRIP
+    features:
+    - column: milrinone_used
+      type: binary
+      description: 사용여부
+    - column: milrinone_route
+      type: categorical
+      description: 투여경로
+    - column: milrinone_dose_total
+      type: numeric
+      unit: mg
+      description: 총용량
+      note: mg와 mcg 혼재 가능
+    - column: milrinone_duration
+      type: numeric
+      unit: hours
+      description: 투여기간
+    - column: milrinone_drug_names
+      type: text
+      description: '정확한 약물명 (구분자: " | ")'
+      example: Drug A | Drug B

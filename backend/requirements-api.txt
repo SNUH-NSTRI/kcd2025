@@ -1,0 +1,48 @@
+# FastAPI Backend Dependencies
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+pydantic==2.9.2
+pydantic-settings==2.11.0
+python-multipart==0.0.12
+
+# RWE CLI Dependencies
+pandas>=2.0.0
+pyarrow>=14.0.0
+
+# API Clients (UMLS, OHDSI)
+requests>=2.31.0
+urllib3>=2.0.0
+
+# Caching (Redis optional)
+redis>=5.0.0
+
+# Development
+python-dotenv==1.0.1
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+
+# Statistical Analysis (Statistician Plugin)
+lifelines>=0.29.0  # Cox Proportional Hazards, survival analysis
+econml>=0.15.0     # Causal ML, Causal Forest, HTE analysis
+shap>=0.45.0       # Shapley values for feature importance
+scikit-learn>=1.3.0  # Propensity score models, general ML
+statsmodels>=0.14.0  # Additional statistical tests
+matplotlib>=3.7.0  # Plotting for KM curves and baseline tables
+seaborn>=0.12.0    # Statistical visualizations
+
+# LangChain & LangGraph (Statistician Agent)
+langchain>=0.1.0
+langchain-core>=0.1.0
+langchain-openai>=0.0.5  # For OpenRouter integration
+langchain-text-splitters>=0.3.0  # Text splitting utilities
+langgraph>=0.0.20
+pyyaml>=6.0.1  # For prompt template loading
+
+# LLM API Clients
+openai>=2.0.0  # OpenAI/OpenRouter API client
+httpx>=0.28.0  # Modern HTTP client for async operations
+tiktoken>=0.12.0  # OpenAI tokenizer
+

@@ -1,0 +1,71 @@
+{
+  "schema_version": "lit.v1",
+  "documents": [
+    {
+      "source": "clinicaltrials",
+      "identifier": "NCT03389555",
+      "title": "Prospective Comparison of ARNI With ACEI to Determine Impact on Global Mortality and Morbidity in Heart Failure (PARADIGM-HF)",
+      "abstract": "A randomized, double-blind study to compare the efficacy and safety of LCZ696 with enalapril on morbidity and mortality in patients with chronic heart failure and reduced ejection fraction.",
+      "full_text": "BACKGROUND: Heart failure with reduced ejection fraction (HFrEF) remains a significant cause of morbidity and mortality.\n\nOBJECTIVE: To compare the effects of the angiotensin receptor-neprilysin inhibitor LCZ696 with enalapril on morbidity and mortality in patients with HFrEF.\n\nMETHODS: In this randomized, double-blind trial, we assigned 8442 patients with NYHA class II, III, or IV heart failure and an ejection fraction of 40% or less to receive either LCZ696 (200 mg twice daily) or enalapril (10 mg twice daily).\n\nRESULTS: The primary outcome was a composite of death from cardiovascular causes or a first hospitalization for heart failure. LCZ696 was superior to enalapril in reducing the risks of death and of hospitalization for heart failure.\n\nCONCLUSIONS: LCZ696 was more effective than enalapril in reducing the risks of death and of hospitalization for heart failure.",
+      "fetched_at": "2024-01-15T10:00:00Z",
+      "url": "https://clinicaltrials.gov/study/NCT03389555",
+      "metadata": {
+        "nct_id": "NCT03389555",
+        "retrieved_at": "2024-01-15T10:00:00Z",
+        "phase": ["Phase 3"],
+        "conditions": ["Heart Failure", "Cardiac Failure"],
+        "status": "Completed",
+        "arms_interventions": {
+          "interventions": [
+            {
+              "type": "Drug",
+              "name": "LCZ696 (Sacubitril/Valsartan)",
+              "description": "200 mg twice daily"
+            },
+            {
+              "type": "Drug",
+              "name": "Enalapril",
+              "description": "10 mg twice daily"
+            }
+          ]
+        },
+        "eligibility": {
+          "eligibilityCriteria": "Inclusion Criteria:\n- Age >= 18 years\n- NYHA class II-IV heart failure\n- Left ventricular ejection fraction (LVEF) <= 40%\n- Elevated BNP (>150 pg/mL) or NT-proBNP (>600 pg/mL)\n- Stable medication regimen\n\nExclusion Criteria:\n- Severe renal impairment (eGFR < 30 mL/min/1.73m²)\n- Symptomatic hypotension\n- History of angioedema\n- Serum potassium > 5.2 mmol/L",
+          "sex": "All",
+          "minimumAge": "18 Years",
+          "stdAges": ["Adult", "Older Adult"]
+        },
+        "outcomes": {
+          "primaryOutcomes": [
+            {
+              "measure": "Composite of cardiovascular death or first hospitalization for heart failure",
+              "timeFrame": "From randomization to end of study (median follow-up 27 months)"
+            }
+          ],
+          "secondaryOutcomes": [
+            {
+              "measure": "Change in Kansas City Cardiomyopathy Questionnaire (KCCQ) score",
+              "timeFrame": "8 months"
+            },
+            {
+              "measure": "Time to first hospitalization for heart failure",
+              "timeFrame": "From randomization to end of study"
+            }
+          ]
+        },
+        "sponsors": {
+          "leadSponsor": {
+            "name": "Novartis Pharmaceuticals"
+          }
+        },
+        "design": {
+          "phases": ["Phase 3"],
+          "studyType": "Interventional",
+          "allocation": "Randomized",
+          "interventionModel": "Parallel Assignment",
+          "masking": "Double Blind (Participant, Investigator)"
+        }
+      }
+    }
+  ]
+}

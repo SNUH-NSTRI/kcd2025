@@ -1,0 +1,373 @@
+{
+  "age_demographic": {
+    "mapping": {
+      "table": "patients",
+      "columns": [
+        "anchor_age"
+      ],
+      "filter_logic": "-- Demographic field: Age"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI age",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199132"
+  },
+  "gender_demographic": {
+    "mapping": {
+      "table": "patients",
+      "columns": [
+        "gender"
+      ],
+      "filter_logic": "-- Demographic field: Gender"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI gender",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199209"
+  },
+  "bnp_(brain_natriuretic_peptide)_measurement": {
+    "mapping": {
+      "table": "labevents",
+      "columns": [
+        "itemid",
+        "valuenum",
+        "valueuom"
+      ],
+      "filter_logic": "itemid = 50885 -- BNP (Brain Natriuretic Peptide)"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0428174",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199239"
+  },
+  "pro-bnp_(n-terminal_pro-bnp)_measurement": {
+    "mapping": {
+      "table": "labevents",
+      "columns": [
+        "itemid",
+        "valuenum",
+        "valueuom"
+      ],
+      "filter_logic": "itemid = 52614 -- Pro-BNP (N-terminal pro-BNP)"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0006560",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199256"
+  },
+  "creatinine_measurement": {
+    "mapping": {
+      "table": "labevents",
+      "columns": [
+        "itemid",
+        "valuenum",
+        "valueuom"
+      ],
+      "filter_logic": "itemid = 50912 -- Creatinine"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0010294",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199271"
+  },
+  "egfr_(estimated_glomerular_filtration_rate)_measurement": {
+    "mapping": {
+      "table": "labevents",
+      "columns": [
+        "itemid",
+        "valuenum",
+        "valueuom"
+      ],
+      "filter_logic": "itemid = 50912 -- eGFR (estimated Glomerular Filtration Rate)"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0017654",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199285"
+  },
+  "lvef_(left_ventricular_ejection_fraction)_measurement": {
+    "mapping": {
+      "table": "chartevents",
+      "columns": [
+        "itemid",
+        "valuenum"
+      ],
+      "filter_logic": "itemid IN (227008) -- LVEF (Left Ventricular Ejection Fraction)"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0489482",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199297"
+  },
+  "hba1c_(hemoglobin_a1c)_measurement": {
+    "mapping": {
+      "table": "labevents",
+      "columns": [
+        "itemid",
+        "valuenum",
+        "valueuom"
+      ],
+      "filter_logic": "itemid = 50852 -- HbA1c (Hemoglobin A1c)"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0019029",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199307"
+  },
+  "blood_pressure_measurement": {
+    "mapping": {
+      "table": "chartevents",
+      "columns": [
+        "itemid",
+        "valuenum"
+      ],
+      "filter_logic": "itemid IN (220050, 220179, 220180) -- Blood Pressure"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0005823",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199317"
+  },
+  "heart_failure_condition": {
+    "mapping": {
+      "table": "diagnoses_icd",
+      "columns": [
+        "icd_code",
+        "icd_version"
+      ],
+      "filter_logic": "icd_version = 10 AND icd_code LIKE 'I50%' -- Heart Failure"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0018799",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199329"
+  },
+  "myocardial_infarction_condition": {
+    "mapping": {
+      "table": "diagnoses_icd",
+      "columns": [
+        "icd_code",
+        "icd_version"
+      ],
+      "filter_logic": "icd_version = 10 AND icd_code LIKE 'I21%' -- Myocardial Infarction"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0027051",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199340"
+  },
+  "diabetes_mellitus_condition": {
+    "mapping": {
+      "table": "diagnoses_icd",
+      "columns": [
+        "icd_code",
+        "icd_version"
+      ],
+      "filter_logic": "icd_version = 10 AND icd_code LIKE 'E10%' -- Diabetes Mellitus"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0011847",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199349"
+  },
+  "hypertension_condition": {
+    "mapping": {
+      "table": "diagnoses_icd",
+      "columns": [
+        "icd_code",
+        "icd_version"
+      ],
+      "filter_logic": "icd_version = 10 AND icd_code LIKE 'I10' -- Hypertension"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0020538",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199359"
+  },
+  "kidney_disease_condition": {
+    "mapping": {
+      "table": "diagnoses_icd",
+      "columns": [
+        "icd_code",
+        "icd_version"
+      ],
+      "filter_logic": "icd_version = 10 AND icd_code LIKE 'N18%' -- Kidney Disease"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0022658",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199367"
+  },
+  "renal_failure_condition": {
+    "mapping": {
+      "table": "diagnoses_icd",
+      "columns": [
+        "icd_code",
+        "icd_version"
+      ],
+      "filter_logic": "icd_version = 10 AND icd_code LIKE 'N17%' -- Renal Failure"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0035078",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199376"
+  },
+  "adenocarcinoma_condition": {
+    "mapping": {
+      "table": "diagnoses_icd",
+      "columns": [
+        "icd_code",
+        "icd_version"
+      ],
+      "filter_logic": "icd_version = 10 AND icd_code LIKE 'C%' -- Adenocarcinoma"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0001418",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199384"
+  },
+  "dialysis_procedure": {
+    "mapping": {
+      "table": "procedureevents",
+      "columns": [
+        "value"
+      ],
+      "filter_logic": "-- Manual mapping required for Dialysis"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0011946",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199393"
+  },
+  "cardiac_catheterization_procedure": {
+    "mapping": {
+      "table": "procedures_icd",
+      "columns": [
+        "icd_code",
+        "icd_version"
+      ],
+      "filter_logic": "icd_version = 10 AND icd_code LIKE '02H%' -- Cardiac Catheterization"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0007430",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199402"
+  },
+  "coronary_artery_bypass_graft_(cabg)_procedure": {
+    "mapping": {
+      "table": "procedures_icd",
+      "columns": [
+        "icd_code",
+        "icd_version"
+      ],
+      "filter_logic": "icd_version = 10 AND icd_code LIKE '021%' -- Coronary Artery Bypass Graft (CABG)"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0010055",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199411"
+  },
+  "sacubitril/valsartan_(entresto)_drug": {
+    "mapping": {
+      "table": "prescriptions",
+      "columns": [
+        "drug"
+      ],
+      "filter_logic": "drug ILIKE '%sacubitril%' -- Sacubitril/Valsartan (Entresto)"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C3653561",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199421"
+  },
+  "arni_(angiotensin_receptor-neprilysin_inhibitor)_drug": {
+    "mapping": {
+      "table": "prescriptions",
+      "columns": [
+        "drug"
+      ],
+      "filter_logic": "drug ILIKE '%sacubitril%' -- ARNi (Angiotensin Receptor-Neprilysin Inhibitor)"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0084904",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199430"
+  },
+  "ace_inhibitor_drug": {
+    "mapping": {
+      "table": "prescriptions",
+      "columns": [
+        "drug"
+      ],
+      "filter_logic": "drug ILIKE '%lisinopril%' -- ACE Inhibitor"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0003015",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199438"
+  },
+  "arb_(angiotensin_receptor_blocker)_drug": {
+    "mapping": {
+      "table": "prescriptions",
+      "columns": [
+        "drug"
+      ],
+      "filter_logic": "drug ILIKE '%losartan%' -- ARB (Angiotensin Receptor Blocker)"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0034802",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199447"
+  },
+  "beta_blocker_drug": {
+    "mapping": {
+      "table": "prescriptions",
+      "columns": [
+        "drug"
+      ],
+      "filter_logic": "drug ILIKE '%metoprolol%' -- Beta Blocker"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0001645",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199456"
+  },
+  "diuretic_drug": {
+    "mapping": {
+      "table": "prescriptions",
+      "columns": [
+        "drug"
+      ],
+      "filter_logic": "drug ILIKE '%furosemide%' -- Diuretic"
+    },
+    "confidence": 1.0,
+    "reasoning": "Migrated from legacy CUI C0012798",
+    "alternatives": [],
+    "source": "manual",
+    "timestamp": "2025-10-17T21:47:21.199465"
+  }
+}

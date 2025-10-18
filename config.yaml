@@ -1,0 +1,98 @@
+# RWE Clinical Trial Emulation Platform Configuration
+
+project:
+  name: "RWE Clinical Trial Platform"
+  version: "1.0.0"
+  
+  # Default implementations for each pipeline stage
+  default_impls:
+    search: "langgraph-search"   # Literature search: synthetic, langgraph-search
+    parser: "trialist"           # Trial parsing: synthetic, langgraph, trialist
+    mapper: "mimic-demo"         # EHR mapping: synthetic, mimic-demo
+    filter: "mimic-demo"         # Cohort filtering: synthetic, mimic-demo
+    analyzer: "synthetic"        # Outcome analysis: synthetic
+    report: "synthetic"          # Report generation: synthetic
+
+# Trialist Agent Configuration
+trialist:
+  enabled: true
+  llm_provider: "gpt-4o-mini"
+  temperature: 0.0
+  
+  # Stage 1: Enhanced NER
+  ner:
+    max_granularity: true        # Split compound concepts
+    inference_enabled: true      # Add implicit concepts
+    confidence_threshold: 0.7    # Minimum confidence for entities
+    domain_taxonomy:
+      - "Demographic"
+      - "Condition" 
+      - "Device"
+      - "Procedure"
+      - "Drug"
+      - "Measurement"
+      - "Observation"
+      - "Visit"
+      - "Negation_cue"
+      - "Temporal"
+      - "Quantity"
+      - "Value"
+  
+  # Stage 2: Standardization (offline mode)
+  standardization:
+    mode: "offline"              # "online" or "offline"
+    vocabulary_db: "data/vocabularies/trialist_vocab.db"
+    umls_api_key: null           # For online mode
+    ohdsi_endpoint: "https://athena.ohdsi.org/api"
+    temporal_ontology: "time_event_v1"
+    confidence_threshold: 0.8
+  
+  # Stage 3: CDM Mapping
+  cdm_mapping:
+    primary_vocabularies:
+      Condition: "ICD-10-CM"
+      Drug: "RxNorm"
+      Measurement: "LOINC"
+      Procedure: "CPT4"
+      Device: "SNOMED CT"
+      Observation: "SNOMED CT"
+      Visit: "SNOMED CT"
+    fallback_enabled: true
+    validation_enabled: true
+    confidence_threshold: 0.75
+
+# Pipeline execution settings
+pipeline:
+  default_max_records: 5
+  require_full_text: false
+  hil_enabled: false             # Human-in-the-loop
+  
+  # Workspace settings
+  workspace:
+    auto_cleanup: false
+    retention_days: 30
+    backup_enabled: false
+
+# MIMIC-IV Integration
+mimic:
+  data_path: "mimiciv/3.1"
+  demo_enabled: true
+  tables:
+    - "patients"
+    - "admissions"
+    - "icustays"
+    - "labevents"
+    - "chartevents"
+    - "prescriptions"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: null                     # Set to file path to enable file logging
+
+# Development settings
+development:
+  debug: false
+  profiling: false
+  mock_apis: false

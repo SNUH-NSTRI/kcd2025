@@ -1,0 +1,68 @@
+[
+  {
+    "id": "NCT03389555",
+    "title": "Multicenter Study of Acute Kidney Injury Following Cardiac Surgery",
+    "authors": ["Smith JA", "Johnson KB", "Williams CD", "Brown EF"],
+    "abstract": "Background: Acute kidney injury (AKI) is a common complication following cardiac surgery with significant morbidity and mortality. This multicenter prospective cohort study aims to evaluate risk factors and outcomes associated with postoperative AKI. Methods: Adult patients undergoing cardiac surgery were enrolled across 12 medical centers. Primary outcome was development of AKI defined by KDIGO criteria within 7 days post-surgery. Results: Among 1,850 patients, 32% developed AKI. Independent risk factors included advanced age, diabetes, preoperative renal dysfunction, and prolonged cardiopulmonary bypass time. Patients with AKI had longer hospital stays and higher 30-day mortality. Conclusions: AKI remains a significant complication following cardiac surgery with multiple modifiable risk factors identified.",
+    "journal": "Journal of the American College of Cardiology",
+    "year": 2023,
+    "source": "CTgov",
+    "keywords": ["acute kidney injury", "cardiac surgery", "risk factors", "outcomes", "multicenter study"],
+    "meshTerms": ["Acute Kidney Injury", "Cardiac Surgical Procedures", "Risk Factors", "Prospective Studies", "Postoperative Complications"]
+  },
+  {
+    "id": "PMID38234567",
+    "title": "Comparative Effectiveness of Renin-Angiotensin System Inhibitors in Chronic Kidney Disease: A Real-World Evidence Study",
+    "authors": ["Lee MH", "Chen YT", "Park SJ", "Kim DW", "Zhang L"],
+    "abstract": "Objective: To compare the effectiveness of ACE inhibitors versus ARBs in slowing chronic kidney disease (CKD) progression using real-world data. Design: Retrospective cohort study using electronic health records from a large healthcare system. Participants: 15,420 adults with stage 3-4 CKD followed for median 4.2 years. Interventions: Treatment with ACE inhibitors (n=8,305) or ARBs (n=7,115). Main Outcomes: Primary endpoint was composite of 40% decline in eGFR, end-stage renal disease, or death. Results: No significant difference in primary endpoint between ACE inhibitors and ARBs (HR 1.05, 95% CI 0.96-1.15). Both drug classes showed similar cardiovascular protection and adverse event profiles. Conclusions: In real-world practice, ACE inhibitors and ARBs demonstrate comparable effectiveness for CKD progression.",
+    "journal": "New England Journal of Medicine",
+    "year": 2024,
+    "source": "PubMed",
+    "keywords": ["chronic kidney disease", "ACE inhibitors", "angiotensin receptor blockers", "real-world evidence", "comparative effectiveness"],
+    "meshTerms": ["Renal Insufficiency, Chronic", "Angiotensin-Converting Enzyme Inhibitors", "Angiotensin Receptor Antagonists", "Electronic Health Records", "Comparative Effectiveness Research"]
+  },
+  {
+    "id": "NCT04567890",
+    "title": "Randomized Trial of Early versus Standard Initiation of Dialysis in Acute Kidney Injury",
+    "authors": ["Garcia R", "Martinez P", "Lopez JM", "Anderson T", "White K"],
+    "abstract": "Background: The optimal timing for initiating renal replacement therapy (RRT) in acute kidney injury (AKI) remains controversial. This randomized controlled trial compared early versus standard RRT initiation strategies. Methods: Critically ill patients with severe AKI were randomized to early RRT (within 12 hours of meeting criteria) or standard RRT (clinical indication-based). Primary outcome was 90-day mortality. Secondary outcomes included dialysis independence, hospital length of stay, and complications. Results: 620 patients were randomized (310 per group). No significant difference in 90-day mortality (early 41% vs standard 43%, p=0.65). Early strategy resulted in more RRT sessions and catheter-related complications without improved survival or renal recovery. Conclusions: Early RRT initiation did not improve outcomes compared to standard strategy in critically ill AKI patients.",
+    "journal": "The Lancet",
+    "year": 2023,
+    "source": "CTgov",
+    "keywords": ["acute kidney injury", "renal replacement therapy", "dialysis timing", "critical care", "randomized controlled trial"],
+    "meshTerms": ["Acute Kidney Injury", "Renal Replacement Therapy", "Critical Illness", "Time-to-Treatment", "Randomized Controlled Trial"]
+  },
+  {
+    "id": "PMID39123456",
+    "title": "Machine Learning Prediction Model for Diabetic Nephropathy Progression Using Electronic Health Records",
+    "authors": ["Wang XY", "Liu F", "Thompson R", "Davis M", "Patel N"],
+    "abstract": "Introduction: Diabetic nephropathy (DN) is a leading cause of end-stage renal disease. We developed a machine learning model to predict DN progression using routinely collected clinical data. Methods: Retrospective analysis of 25,890 patients with type 2 diabetes and early-stage nephropathy. Gradient boosting algorithms were trained on 80% of data using demographics, laboratory values, medications, and comorbidities. Primary outcome was progression to advanced CKD (eGFR <30 ml/min/1.73m²) or ESRD within 5 years. Results: The model achieved AUROC 0.84 (95% CI 0.82-0.86) in validation cohort. Top predictors included baseline eGFR, HbA1c, albuminuria, systolic blood pressure, and duration of diabetes. Model outperformed traditional risk scores (KDIGO: AUROC 0.76). Conclusions: Machine learning models using EHR data can accurately predict diabetic nephropathy progression, enabling earlier intervention strategies.",
+    "journal": "Journal of the American Medical Informatics Association",
+    "year": 2024,
+    "source": "PubMed",
+    "keywords": ["diabetic nephropathy", "machine learning", "electronic health records", "risk prediction", "chronic kidney disease"],
+    "meshTerms": ["Diabetic Nephropathies", "Machine Learning", "Electronic Health Records", "Disease Progression", "Risk Assessment"]
+  },
+  {
+    "id": "NCT05123789",
+    "title": "Efficacy of SGLT2 Inhibitors in Non-Diabetic Chronic Kidney Disease: A Pragmatic Clinical Trial",
+    "authors": ["Johnson DW", "Roberts MA", "Cass A", "Hawley CM", "Peters R"],
+    "abstract": "Background: SGLT2 inhibitors show renoprotective effects in diabetic kidney disease, but evidence in non-diabetic CKD is limited. This pragmatic trial evaluated dapagliflozin in non-diabetic CKD patients. Methods: Multi-site randomized trial enrolling 2,152 adults with CKD stages 2-4 without diabetes. Participants received dapagliflozin 10mg daily or placebo. Primary endpoint was composite of sustained eGFR decline ≥50%, ESRD, or renal death. Median follow-up 2.8 years. Results: Primary endpoint occurred in 197 (18.3%) dapagliflozin vs 312 (29.0%) placebo patients (HR 0.56, 95% CI 0.47-0.67, p<0.001). Benefits consistent across CKD stages and etiologies. Adverse events similar between groups except higher genital infections with dapagliflozin. Conclusions: Dapagliflozin significantly reduced CKD progression risk in non-diabetic patients, supporting broader use of SGLT2 inhibitors.",
+    "journal": "JAMA",
+    "year": 2024,
+    "source": "CTgov",
+    "keywords": ["SGLT2 inhibitors", "chronic kidney disease", "non-diabetic", "renoprotection", "pragmatic trial"],
+    "meshTerms": ["Sodium-Glucose Transporter 2 Inhibitors", "Renal Insufficiency, Chronic", "Disease Progression", "Pragmatic Clinical Trials", "Renal Replacement Therapy"]
+  },
+  {
+    "id": "PMID40234789",
+    "title": "Long-term Outcomes of Living Donor Kidney Transplantation: A 15-Year Cohort Study",
+    "authors": ["Miller AB", "Foster KL", "Jackson PR", "Wilson DG", "Thomas JH"],
+    "abstract": "Background: Long-term outcomes data for living donor kidney transplantation (LDKT) are essential for informed decision-making. We evaluated 15-year outcomes in a large LDKT cohort. Methods: Prospective observational study of 3,450 LDKT recipients transplanted between 2005-2010. Outcomes included graft survival, patient survival, rejection episodes, and quality of life. Comparison group included 2,890 deceased donor transplant recipients. Results: 15-year graft survival was 68% for LDKT vs 52% for deceased donor (p<0.001). Patient survival was 82% vs 71% (p<0.001). LDKT recipients had lower acute rejection rates (18% vs 29%, p<0.001) and better renal function throughout follow-up. Quality of life scores were consistently higher in LDKT group. Donor outcomes showed excellent long-term safety with <2% developing ESRD. Conclusions: LDKT demonstrates superior long-term outcomes compared to deceased donor transplantation with excellent donor safety profile.",
+    "journal": "American Journal of Transplantation",
+    "year": 2023,
+    "source": "PubMed",
+    "keywords": ["kidney transplantation", "living donor", "long-term outcomes", "graft survival", "quality of life"],
+    "meshTerms": ["Kidney Transplantation", "Living Donors", "Graft Survival", "Treatment Outcome", "Quality of Life"]
+  }
+]

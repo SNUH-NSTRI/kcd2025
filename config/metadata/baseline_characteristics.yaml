@@ -1,0 +1,387 @@
+version: "1.0"
+description: "MIMIC-IV Baseline Characteristics"
+total_features: 63
+
+metadata:
+  description: "ICU stay 식별 정보"
+  columns:
+    - subject_id
+    - hadm_id
+    - stay_id
+    - intime
+    - outtime
+    - los
+    - first_careunit
+
+demographics:
+  description: "환자 인구통계학적 정보"
+  features:
+    - name: gender
+      type: categorical
+      korean: 성별
+      values: [M, F]
+
+    - name: anchor_age
+      type: numeric
+      korean: 나이
+      unit: years
+      range: [18, 90]
+
+    - name: height_cm
+      type: numeric
+      korean: 키
+      unit: cm
+      range: [100, 250]
+
+    - name: weight_kg
+      type: numeric
+      korean: 체중
+      unit: kg
+      range: [30, 300]
+
+    - name: bmi
+      type: numeric
+      korean: 체질량지수
+      unit: kg/m²
+      range: [10, 80]
+      normal_range: [18.5, 24.9]
+
+    - name: race
+      type: categorical
+      korean: 인종
+
+vital_signs:
+  description: "ICU 입실 후 24시간 평균 활력징후"
+  time_window: "0-24h after ICU admission"
+  aggregation: average
+  features:
+    - name: temperature
+      type: numeric
+      korean: 체온
+      unit: °C
+      range: [32, 42]
+      normal_range: [36.5, 37.5]
+
+    - name: heart_rate
+      type: numeric
+      korean: 심박수
+      unit: bpm
+      range: [20, 200]
+      normal_range: [60, 100]
+
+    - name: sbp
+      type: numeric
+      korean: 수축기혈압
+      unit: mmHg
+      range: [40, 250]
+      normal_range: [90, 120]
+
+    - name: dbp
+      type: numeric
+      korean: 이완기혈압
+      unit: mmHg
+      range: [20, 150]
+      normal_range: [60, 80]
+
+    - name: respiratory_rate
+      type: numeric
+      korean: 호흡수
+      unit: /min
+      range: [5, 60]
+      normal_range: [12, 20]
+
+    - name: spo2
+      type: numeric
+      korean: 산소포화도
+      unit: "%"
+      range: [50, 100]
+      normal_range: [95, 100]
+
+laboratory:
+  description: "첫 검사 결과 (-6h ~ +24h)"
+  time_window: "-6h to +24h from ICU admission"
+  aggregation: first
+
+  blood_gas:
+    - name: ph
+      type: numeric
+      korean: pH
+      range: [6.8, 7.8]
+      normal_range: [7.35, 7.45]
+
+    - name: po2
+      type: numeric
+      korean: 산소분압
+      unit: mmHg
+      range: [20, 500]
+      normal_range: [80, 100]
+
+    - name: pco2
+      type: numeric
+      korean: 이산화탄소분압
+      unit: mmHg
+      range: [10, 100]
+      normal_range: [35, 45]
+
+  hematology:
+    - name: hematocrit
+      type: numeric
+      korean: 적혈구용적률
+      unit: "%"
+      range: [10, 60]
+      normal_range: [36, 48]
+
+    - name: hemoglobin
+      type: numeric
+      korean: 헤모글로빈
+      unit: g/dL
+      range: [2, 20]
+      normal_range: [12, 16]
+
+    - name: wbc
+      type: numeric
+      korean: 백혈구
+      unit: K/uL
+      range: [0, 100]
+      normal_range: [4, 11]
+
+    - name: platelets
+      type: numeric
+      korean: 혈소판
+      unit: K/uL
+      range: [0, 1000]
+      normal_range: [150, 400]
+
+  electrolytes:
+    - name: sodium
+      type: numeric
+      korean: 나트륨
+      unit: mEq/L
+      range: [100, 170]
+      normal_range: [135, 145]
+
+    - name: potassium
+      type: numeric
+      korean: 칼륨
+      unit: mEq/L
+      range: [1.5, 10]
+      normal_range: [3.5, 5.0]
+
+    - name: chloride
+      type: numeric
+      korean: 염소
+      unit: mEq/L
+      range: [70, 140]
+      normal_range: [95, 105]
+
+    - name: glucose
+      type: numeric
+      korean: 혈당
+      unit: mg/dL
+      range: [20, 1000]
+      normal_range: [70, 100]
+
+  liver_function:
+    - name: ast
+      type: numeric
+      korean: AST
+      unit: U/L
+      range: [0, 5000]
+      normal_range: [0, 40]
+
+    - name: alt
+      type: numeric
+      korean: ALT
+      unit: U/L
+      range: [0, 5000]
+      normal_range: [0, 40]
+
+    - name: alp
+      type: numeric
+      korean: ALP
+      unit: U/L
+      range: [0, 1000]
+      normal_range: [30, 120]
+
+    - name: ggt
+      type: numeric
+      korean: GGT
+      unit: U/L
+      range: [0, 1000]
+      normal_range: [0, 50]
+
+  coagulation:
+    - name: d_dimer
+      type: numeric
+      korean: D-dimer
+      unit: ng/mL
+      range: [0, 50000]
+      normal_range: [0, 500]
+
+    - name: fibrinogen
+      type: numeric
+      korean: 피브리노겐
+      unit: mg/dL
+      range: [0, 1000]
+      normal_range: [200, 400]
+
+    - name: pt
+      type: numeric
+      korean: PT
+      unit: seconds
+      range: [5, 100]
+      normal_range: [11, 13.5]
+
+    - name: ptt
+      type: numeric
+      korean: aPTT
+      unit: seconds
+      range: [10, 200]
+      normal_range: [25, 35]
+
+  renal_function:
+    - name: bun
+      type: numeric
+      korean: BUN
+      unit: mg/dL
+      range: [0, 200]
+      normal_range: [7, 20]
+
+    - name: creatinine
+      type: numeric
+      korean: 크레아티닌
+      unit: mg/dL
+      range: [0, 20]
+      normal_range: [0.6, 1.2]
+
+    - name: lactate
+      type: numeric
+      korean: 젖산
+      unit: mmol/L
+      range: [0, 30]
+      normal_range: [0.5, 2.2]
+
+  serum_proteins:
+    - name: total_protein
+      type: numeric
+      korean: 총단백질
+      unit: g/dL
+      range: [0, 15]
+      normal_range: [6.0, 8.3]
+
+    - name: albumin
+      type: numeric
+      korean: 알부민
+      unit: g/dL
+      range: [0, 10]
+      normal_range: [3.5, 5.5]
+
+  inflammation:
+    - name: crp
+      type: numeric
+      korean: C-반응성단백
+      unit: mg/L
+      range: [0, 500]
+      normal_range: [0, 10]
+
+    - name: procalcitonin
+      type: numeric
+      korean: 프로칼시토닌
+      unit: ng/mL
+      range: [0, 200]
+      normal_range: [0, 0.5]
+
+severity_scores:
+  description: "중증도 점수"
+  features:
+    - name: gcs
+      type: numeric
+      korean: Glasgow Coma Scale
+      range: [3, 15]
+      aggregation: minimum
+      interpretation:
+        severe: [3, 8]
+        moderate: [9, 12]
+        mild: [13, 15]
+
+    - name: apache_ii
+      type: numeric
+      korean: APACHE II Score
+      range: [0, 71]
+      interpretation:
+        low_risk: [0, 10]
+        moderate_risk: [11, 20]
+        high_risk: [21, 30]
+        very_high_risk: [31, 71]
+
+comorbidities:
+  description: "Charlson Comorbidity Index 기반 동반질환"
+  source: ICD-10 codes
+  features:
+    - name: charlson_score
+      type: numeric
+      korean: Charlson Index
+      range: [0, 20]
+
+    - name: chf
+      type: binary
+      korean: 울혈성심부전
+
+    - name: mi
+      type: binary
+      korean: 심근경색
+
+    - name: pvd
+      type: binary
+      korean: 말초혈관질환
+
+    - name: cvd
+      type: binary
+      korean: 뇌혈관질환
+
+    - name: copd
+      type: binary
+      korean: 만성폐쇄성폐질환
+
+    - name: diabetes
+      type: binary
+      korean: 당뇨병
+
+    - name: ckd
+      type: binary
+      korean: 만성신장질환
+
+    - name: liver_disease
+      type: binary
+      korean: 간질환
+
+    - name: cancer
+      type: binary
+      korean: 암
+
+organ_support:
+  description: "ICU 입실 시점 장기지지요법"
+  features:
+    - name: vasopressor_norepinephrine
+      type: binary
+      korean: 노르에피네프린
+
+    - name: vasopressor_vasopressin
+      type: binary
+      korean: 바소프레신
+
+    - name: vasopressor_epinephrine
+      type: binary
+      korean: 에피네프린
+
+    - name: any_vasopressor
+      type: binary
+      korean: 승압제사용
+
+    - name: mechanical_ventilation
+      type: binary
+      korean: 기계환기
+
+    - name: renal_replacement_therapy
+      type: binary
+      korean: ���대체요법

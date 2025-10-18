@@ -1,0 +1,255 @@
+# Statistician Agent Prompt Templates
+# Version: 1.0
+# Last Updated: 2025-10-15
+
+system_messages:
+  parameter_recommendation: "You are an expert biostatistician specializing in propensity score matching for clinical trials."
+
+  results_interpretation: "You are an expert clinical biostatistician specializing in causal inference and survival analysis."
+
+prompts:
+  # ============================================================================
+  # Node 2: PSM Parameter Recommendation
+  # ============================================================================
+  parameter_recommendation:
+    template: |
+      You are an expert biostatistician analyzing a clinical trial cohort for Propensity Score Matching (PSM).
+
+      **Cohort Characteristics:**
+      - Total patients: {total_patients:,}
+      - Treatment: {treatment_n:,} ({treatment_pct:.1f}%)
+      - Control: {control_n:,} ({control_pct:.1f}%)
+
+      **Pre-matching Imbalance:**
+      - Total variables analyzed: {total_variables}
+      - Imbalanced variables (SMD > 0.1): {imbalanced_vars}
+      - Maximum SMD: {max_smd:.3f}
+      - Median SMD: {median_smd:.3f}
+
+      **Top 5 Most Imbalanced Variables:**
+      {top_imbalanced_json}
+
+      **Missingness:**
+      - Variables with >20% missing: {high_missing_count}
+      - Median missing percentage: {median_missing_pct:.1f}%
+
+      **Task:**
+      Recommend optimal PSM parameters for this cohort. Respond in JSON format:
+
+      {{
+        "caliper_multiplier": <float between 0.1 and 0.5, standard is 0.2>,
+        "matching_ratio": <"1:1" or "1:N">,
+        "variable_selection_strategy": <"exclude_high_missing" or "impute_comorbidities">,
+        "exclude_threshold_pct": <float, e.g., 20.0 for excluding vars with >20% missing>,
+        "rationale": "<brief explanation of recommendations>"
+      }}
+
+      Consider:
+      1. Treatment/control imbalance (we have {treatment_pct:.1f}% treatment)
+      2. Degree of pre-matching imbalance (max SMD: {max_smd:.3f})
+      3. Missingness patterns
+      4. Sample size constraints
+
+    variables:
+      - total_patients
+      - treatment_n
+      - treatment_pct
+      - control_n
+      - control_pct
+      - total_variables
+      - imbalanced_vars
+      - max_smd
+      - median_smd
+      - top_imbalanced_json
+      - high_missing_count
+      - median_missing_pct
+
+  # ============================================================================
+  # Node 4: Results Interpretation
+  # ============================================================================
+  results_interpretation:
+    template: |
+      You are an expert biostatistician interpreting PSM + Survival Analysis results for a clinical trial.
+
+      **Study Context:**
+      - Total cohort: {total_patients:,} septic shock patients
+      - Treatment: {treatment_n:,} patients
+      - Control: {control_n:,} patients
+      - Outcome: 28-day mortality
+
+      **PSM Parameters Used:**
+      - Caliper: {caliper_multiplier} × SD
+      - Variable selection: {variable_selection_strategy}
+
+      **Main Analysis Results:**
+      - Matched pairs: {main_n_treatment}
+      - Treatment mortality: {main_mortality_treatment:.1f}%
+      - Control mortality: {main_mortality_control:.1f}%
+      - Hazard Ratio: {main_hr:.3f} (95% CI: {main_ci_lower:.3f}-{main_ci_upper:.3f})
+      - P-value: {main_pvalue:.4f}
+
+      **Sensitivity Analysis Results:**
+      - Matched pairs: {sens_n_treatment}
+      - Treatment mortality: {sens_mortality_treatment:.1f}%
+      - Control mortality: {sens_mortality_control:.1f}%
+      - Hazard Ratio: {sens_hr:.3f} (95% CI: {sens_ci_lower:.3f}-{sens_ci_upper:.3f})
+      - P-value: {sens_pvalue:.4f}
+
+      **Causal Forest Analysis (Heterogeneous Treatment Effects):**
+      {causal_forest_section}
+
+      **Task:**
+      Provide a comprehensive clinical interpretation following these guidelines:
+
+      ## Executive Summary
+      - State the primary finding in 2-3 sentences
+      - Mention treatment effect direction (beneficial/harmful/neutral) and significance
+      - Indicate whether results are conclusive
+
+      ## PSM Quality Assessment
+      Evaluate the following:
+      1. **Matching Success Rate**: {main_n_treatment} pairs from {treatment_n_original} treatment patients = {matching_rate:.1f}% matched
+         - Excellent: >90%, Good: 70-90%, Poor: <70%
+      2. **Balance Achievement**: Review if SMD < 0.1 for most covariates (check baseline_table_main_JAMA.md)
+         - State if balance was achieved adequately
+      3. **Sample Size Adequacy**: {main_n_treatment} pairs for mortality outcome
+         - Assess power to detect clinically meaningful differences (typically need >200 pairs for 80% power)
+
+      ## Survival Analysis Interpretation
+      Provide detailed interpretation:
+      1. **Point Estimate**: HR = {main_hr:.3f}
+         - HR < 1: Protective effect (reduced hazard)
+         - HR = 1: No effect
+         - HR > 1: Increased hazard
+         - Magnitude: Small (<0.8 or >1.2), Moderate (0.5-0.8 or 1.2-2.0), Large (<0.5 or >2.0)
+
+      2. **Confidence Interval**: 95% CI [{main_ci_lower:.3f}, {main_ci_upper:.3f}]
+         - Does it cross 1.0? If yes, statistically non-significant
+         - Width indicates precision: Narrow = precise, Wide = imprecise
+
+      3. **Statistical Significance**: p = {main_pvalue:.4f}
+         - p < 0.05: Statistically significant
+         - p ≥ 0.05: Not statistically significant
+         - Distinguish statistical vs clinical significance
+
+      4. **Absolute Risk Difference**: {main_mortality_treatment:.1f}% vs {main_mortality_control:.1f}%
+         - Calculate absolute difference and NNT if beneficial
+         - Assess clinical meaningfulness (e.g., >5% difference often considered clinically important)
+
+      ## Consistency Check
+      Compare main vs sensitivity analyses:
+      1. **Direction**: Both HR < 1, = 1, or > 1? Consistent direction indicates robustness
+      2. **Magnitude**: Similar HRs? (Main: {main_hr:.3f}, Sensitivity: {sens_hr:.3f})
+      3. **Significance**: Both significant or both non-significant?
+      4. **Conclusion**: Are findings robust across different assumptions?
+
+      ## Heterogeneous Treatment Effects (Causal Forest)
+      If Causal Forest results are available, interpret:
+      1. **Average Treatment Effect (ATE)**: Overall population-level treatment effect
+         - Compare with Cox HR to validate consistency
+         - ATE > 0: benefit, ATE < 0: harm, ATE ≈ 0: no effect
+      2. **Individual-level Effects (CATE)**: Range of treatment responses across patients
+         - Positive response rate: Percentage of patients who benefit
+         - CATE variability (std, range): Degree of heterogeneity
+      3. **Feature Importance**: Which baseline characteristics explain heterogeneity?
+         - Top predictors of differential treatment response
+         - Clinical relevance for patient selection
+      4. **Clinical Actionability**: Can we identify subgroups who benefit most?
+         - Personalized treatment recommendations
+         - Precision medicine implications
+
+      ## Clinical Implications
+      Address:
+      1. **For Clinical Practice**: Should this treatment be used based on these findings?
+      2. **Patient Selection**: Are there subgroups that might benefit?
+      3. **Risk-Benefit**: Consider mortality benefit vs potential harms/costs
+      4. **Comparison to Literature**: How do results compare to existing evidence?
+      5. **Next Steps**: What further research is needed?
+
+      ## Limitations
+      Critically evaluate:
+      1. **Residual Confounding**: Unmeasured confounders (e.g., disease severity markers not captured)
+      2. **Selection Bias**: Only {matching_rate:.1f}% of treatment patients matched
+      3. **Generalizability**: Single-center vs multi-center, specific population characteristics
+      4. **Matching Quality**: Pre-matching imbalance was severe (max SMD: {pre_matching_max_smd:.3f})
+      5. **Sample Size**: Power limitations with {main_n_treatment} pairs
+      6. **Missing Data**: {high_missing_count} variables excluded due to >20% missingness
+      7. **Causal Inference**: PSM assumes no unmeasured confounding (untestable assumption)
+
+      Write in clear, evidence-based language suitable for publication in clinical journals.
+
+    variables:
+      - total_patients
+      - treatment_n
+      - control_n
+      - caliper_multiplier
+      - variable_selection_strategy
+      - main_n_treatment
+      - main_mortality_treatment
+      - main_mortality_control
+      - main_hr
+      - main_ci_lower
+      - main_ci_upper
+      - main_pvalue
+      - sens_n_treatment
+      - sens_mortality_treatment
+      - sens_mortality_control
+      - sens_hr
+      - sens_ci_lower
+      - sens_ci_upper
+      - sens_pvalue
+      - treatment_n_original
+      - matching_rate
+      - pre_matching_max_smd
+      - high_missing_count
+      - causal_forest_section
+
+# ============================================================================
+# Evaluation Criteria
+# ============================================================================
+evaluation_criteria:
+  matching_success_rate:
+    excellent: ">90%"
+    good: "70-90%"
+    poor: "<70%"
+
+  smd_balance:
+    excellent: "<0.1 for all variables"
+    acceptable: "<0.1 for >80% variables"
+    poor: "<0.1 for <80% variables"
+
+  sample_size:
+    adequate: ">200 pairs (80% power)"
+    marginal: "100-200 pairs"
+    insufficient: "<100 pairs"
+
+  hr_magnitude:
+    small: "<0.8 or >1.2"
+    moderate: "0.5-0.8 or 1.2-2.0"
+    large: "<0.5 or >2.0"
+
+  clinical_importance:
+    meaningful: ">5% absolute risk difference"
+    uncertain: "2-5% absolute risk difference"
+    minimal: "<2% absolute risk difference"
+
+  statistical_significance:
+    threshold: 0.05
+    highly_significant: "<0.01"
+    borderline: "0.05-0.10"
+
+# ============================================================================
+# Configuration
+# ============================================================================
+config:
+  temperature:
+    parameter_recommendation: 0.3  # More deterministic for parameter selection
+    results_interpretation: 0.5   # More creative for clinical interpretation
+
+  max_tokens: 4096
+
+  model:
+    default: "openai/gpt-4o-mini"
+    alternatives:
+      - "openai/gpt-4o"
+      - "anthropic/claude-3.5-sonnet"

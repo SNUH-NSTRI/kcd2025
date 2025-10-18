@@ -1,0 +1,196 @@
+{
+  "schema_version": "cohort.v1",
+  "nct_id": "NCT03389555",
+  "source_database": "MIMIC-IV v3.1",
+  "generated_at": "2024-01-15T12:00:00Z",
+  "summary": {
+    "initialPatientCount": 41142,
+    "finalCohortSize": 11858,
+    "attritionFunnel": [
+      {
+        "step": 0,
+        "criteriaId": "INITIAL",
+        "description": "All patients in MIMIC-IV",
+        "patients_remaining": 41142
+      },
+      {
+        "step": 1,
+        "criteriaId": "included_adult",
+        "description": "Age >= 18 years",
+        "patients_remaining": 38521
+      },
+      {
+        "step": 2,
+        "criteriaId": "included_sepsis3_infection",
+        "description": "Sepsis-3 diagnosis with infection",
+        "patients_remaining": 15847
+      },
+      {
+        "step": 3,
+        "criteriaId": "included_vasopressor",
+        "description": "On vasopressors for >= 4 hours",
+        "patients_remaining": 12234
+      },
+      {
+        "step": 4,
+        "criteriaId": "excluded_pregnancy",
+        "description": "Exclude: Pregnancy",
+        "patients_remaining": 12198
+      },
+      {
+        "step": 5,
+        "criteriaId": "excluded_kidney_stones",
+        "description": "Exclude: Kidney stones",
+        "patients_remaining": 12142
+      },
+      {
+        "step": 6,
+        "criteriaId": "excluded_esrd",
+        "description": "Exclude: End-stage renal disease",
+        "patients_remaining": 11992
+      },
+      {
+        "step": 7,
+        "criteriaId": "excluded_g6pd",
+        "description": "Exclude: G6PD deficiency",
+        "patients_remaining": 11976
+      },
+      {
+        "step": 8,
+        "criteriaId": "excluded_hemochromatosis",
+        "description": "Exclude: Hemochromatosis",
+        "patients_remaining": 11967
+      },
+      {
+        "step": 9,
+        "criteriaId": "excluded_early_death",
+        "description": "Exclude: Death within 24h of ICU admission",
+        "patients_remaining": 11858
+      }
+    ]
+  },
+  "cohort_characteristics": {
+    "mean_age": 64.2,
+    "age_std": 15.8,
+    "gender_distribution": {
+      "male": 6821,
+      "female": 5037
+    },
+    "treatment_groups": {
+      "control": 5892,
+      "hydrocortisone": 5966
+    }
+  },
+  "sample_patients": [
+    {
+      "subject_id": "10000690",
+      "hadm_id": "25860671",
+      "age_at_admission": 86,
+      "gender": "F",
+      "treatment_group": "control",
+      "icu_intime": "2150-11-02T19:37:00Z",
+      "sepsis_onset": "2150-11-02T20:15:00Z",
+      "vasopressor_start": "2150-11-02T21:00:00Z",
+      "vasopressor_duration_hrs": 48.5
+    },
+    {
+      "subject_id": "10001884",
+      "hadm_id": "26184834",
+      "age_at_admission": 68,
+      "gender": "M",
+      "treatment_group": "control",
+      "icu_intime": "2131-01-11T04:20:05Z",
+      "sepsis_onset": "2131-01-11T06:30:00Z",
+      "vasopressor_start": "2131-01-11T08:00:00Z",
+      "vasopressor_duration_hrs": 72.3
+    },
+    {
+      "subject_id": "10002013",
+      "hadm_id": "23581541",
+      "age_at_admission": 53,
+      "gender": "F",
+      "treatment_group": "control",
+      "icu_intime": "2160-05-18T10:00:53Z",
+      "sepsis_onset": "2160-05-18T11:45:00Z",
+      "vasopressor_start": "2160-05-18T13:00:00Z",
+      "vasopressor_duration_hrs": 28.7
+    },
+    {
+      "subject_id": "10002114",
+      "hadm_id": "27793700",
+      "age_at_admission": 56,
+      "gender": "M",
+      "treatment_group": "control",
+      "icu_intime": "2162-02-17T23:30:00Z",
+      "sepsis_onset": "2162-02-18T01:00:00Z",
+      "vasopressor_start": "2162-02-18T02:30:00Z",
+      "vasopressor_duration_hrs": 96.2
+    },
+    {
+      "subject_id": "10003019",
+      "hadm_id": "22774359",
+      "age_at_admission": 69,
+      "gender": "M",
+      "treatment_group": "hydrocortisone",
+      "icu_intime": "2175-10-08T18:58:00Z",
+      "sepsis_onset": "2175-10-08T20:15:00Z",
+      "vasopressor_start": "2175-10-08T22:00:00Z",
+      "vasopressor_duration_hrs": 54.8
+    },
+    {
+      "subject_id": "10004235",
+      "hadm_id": "24181354",
+      "age_at_admission": 47,
+      "gender": "F",
+      "treatment_group": "hydrocortisone",
+      "icu_intime": "2196-02-24T17:07:00Z",
+      "sepsis_onset": "2196-02-24T18:30:00Z",
+      "vasopressor_start": "2196-02-24T20:00:00Z",
+      "vasopressor_duration_hrs": 38.4
+    },
+    {
+      "subject_id": "10002495",
+      "hadm_id": "24982426",
+      "age_at_admission": 81,
+      "gender": "M",
+      "treatment_group": "control",
+      "icu_intime": "2141-05-22T20:18:01Z",
+      "sepsis_onset": "2141-05-22T22:00:00Z",
+      "vasopressor_start": "2141-05-23T00:00:00Z",
+      "vasopressor_duration_hrs": 67.1
+    },
+    {
+      "subject_id": "10002760",
+      "hadm_id": "28094813",
+      "age_at_admission": 56,
+      "gender": "F",
+      "treatment_group": "control",
+      "icu_intime": "2141-04-20T13:20:46Z",
+      "sepsis_onset": "2141-04-20T15:00:00Z",
+      "vasopressor_start": "2141-04-20T16:30:00Z",
+      "vasopressor_duration_hrs": 42.9
+    },
+    {
+      "subject_id": "10003637",
+      "hadm_id": "28317408",
+      "age_at_admission": 57,
+      "gender": "M",
+      "treatment_group": "control",
+      "icu_intime": "2150-05-16T07:30:28Z",
+      "sepsis_onset": "2150-05-16T09:00:00Z",
+      "vasopressor_start": "2150-05-16T10:30:00Z",
+      "vasopressor_duration_hrs": 31.2
+    },
+    {
+      "subject_id": "10004401",
+      "hadm_id": "29988601",
+      "age_at_admission": 82,
+      "gender": "F",
+      "treatment_group": "control",
+      "icu_intime": "2144-01-26T22:28:04Z",
+      "sepsis_onset": "2144-01-27T00:00:00Z",
+      "vasopressor_start": "2144-01-27T01:30:00Z",
+      "vasopressor_duration_hrs": 58.6
+    }
+  ]
+}

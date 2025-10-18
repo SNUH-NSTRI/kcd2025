@@ -1,0 +1,111 @@
+import type { DictionaryField } from '../types';
+
+export const COHORT_DICTIONARY: DictionaryField[] = [
+  {
+    id: 'lab_hba1c',
+    label: 'HbA1c (%)',
+    type: 'numeric',
+    description: 'Most recent glycated haemoglobin measurement within 12 months.',
+    tags: ['glycemic', 'diabetes', 'labs'],
+    range: { min: 4.5, max: 12.5 },
+    decimals: 1,
+  },
+  {
+    id: 'vitals_bmi',
+    label: 'Body Mass Index',
+    type: 'numeric',
+    description: 'BMI calculated from height and weight observations.',
+    tags: ['anthropometrics', 'metabolic'],
+    range: { min: 16, max: 42 },
+    decimals: 1,
+  },
+  {
+    id: 'vitals_sbp',
+    label: 'Systolic Blood Pressure',
+    type: 'numeric',
+    description: 'Median systolic blood pressure within 48h of index visit.',
+    tags: ['cardiology', 'vitals'],
+    range: { min: 90, max: 190 },
+  },
+  {
+    id: 'vitals_dbp',
+    label: 'Diastolic Blood Pressure',
+    type: 'numeric',
+    description: 'Median diastolic blood pressure within 48h of index visit.',
+    tags: ['cardiology', 'vitals'],
+    range: { min: 50, max: 110 },
+  },
+  {
+    id: 'labs_creatinine',
+    label: 'Serum Creatinine',
+    type: 'numeric',
+    description: 'Baseline serum creatinine (mg/dL).',
+    tags: ['renal', 'labs'],
+    range: { min: 0.6, max: 3.5 },
+    decimals: 2,
+  },
+  {
+    id: 'labs_egfr',
+    label: 'eGFR',
+    type: 'numeric',
+    description: 'Estimated glomerular filtration rate (mL/min/1.73m2).',
+    tags: ['renal', 'labs'],
+    range: { min: 10, max: 120 },
+  },
+  {
+    id: 'demo_ethnicity',
+    label: 'Ethnicity (Y/N BIPOC)',
+    type: 'boolean',
+    description: 'Derived indicator denoting identification with BIPOC groups.',
+    tags: ['demographics'],
+  },
+  {
+    id: 'demo_smoker',
+    label: 'Current Smoker',
+    type: 'boolean',
+    description: 'Tobacco use documented within 6 months.',
+    tags: ['lifestyle'],
+  },
+  {
+    id: 'meds_statins',
+    label: 'On Statin Therapy',
+    type: 'boolean',
+    description: 'Active statin medication order at index date.',
+    tags: ['medications', 'cardiology'],
+  },
+  {
+    id: 'service_unit',
+    label: 'Service Unit',
+    type: 'categorical',
+    description: 'Primary clinical unit associated with admission.',
+    tags: ['context'],
+    categories: ['ICU', 'CCU', 'Ward', 'Outpatient'],
+  },
+  {
+    id: 'therapy_arm',
+    label: 'Therapy Arm',
+    type: 'categorical',
+    description: 'Mapped treatment arm label (e.g., control vs intervention).',
+    tags: ['treatment'],
+    categories: ['Control', 'Intervention A', 'Intervention B'],
+  },
+  {
+    id: 'diagnosis_group',
+    label: 'Diagnosis Cluster',
+    type: 'categorical',
+    description: 'High-level diagnosis grouping derived from ICD codes.',
+    tags: ['diagnosis'],
+    categories: ['Cardio-metabolic', 'Renal', 'Respiratory', 'Neurology'],
+  },
+  {
+    id: 'timeline_index_date',
+    label: 'Index Date',
+    type: 'date',
+    description: 'Anchor date for cohort entry.',
+    tags: ['temporal'],
+  },
+];
+
+export function getDictionaryField(id: string): DictionaryField | undefined {
+  return COHORT_DICTIONARY.find((field) => field.id === id);
+}
